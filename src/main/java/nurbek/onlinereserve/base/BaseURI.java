@@ -12,5 +12,9 @@ public interface BaseURI {
     String API_V2_PATH = API + V2;
 
     String APPOINTMENT = "/appointment";
+    String BRANCH = "/branch";
+
+    String REGISTER = "/register";
+    String LIST = "/list";
 
 }
