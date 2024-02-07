@@ -11,6 +11,8 @@ import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class BranchController implements BranchEndpoint {
@@ -25,7 +27,7 @@ public class BranchController implements BranchEndpoint {
 
     @Override
     public ResponseEntity<?> getBranchList() {
-
+        List<ResBranch> branchList = service.getAllBranches();
         return null;
     }
 }

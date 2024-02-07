@@ -13,6 +13,9 @@ import nurbek.onlinereserve.rest.repo.BranchRepository;
 import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BranchServiceImpl implements BranchService {
@@ -45,6 +48,28 @@ public class BranchServiceImpl implements BranchService {
         repository.save(branch);
 
         return null;
+    }
+
+    @Override
+    public List<ResBranch> getAllBranches() {
+        List<Branch> all = repository.findAll();
+
+        List<ResBranch> resultList = new ArrayList<>();
+
+        for (Branch branch : all) {
+
+            ResBranch resBranch = new ResBranch();
+            resBranch.setName(branch.getName());
+            resBranch.setDescription(branch.getDescription());
+            resBranch.setOpenAt(branch.getOpenAt());
+            resBranch.setCloseAt(branch.getCloseAt());
+            resBranch.setGrade(branch.getGrade());
+            resBranch.setAddress(branch.getAddress());
+
+            resultList.add(resBranch);
+        }
+
+        return resultList;
     }
 
 }
