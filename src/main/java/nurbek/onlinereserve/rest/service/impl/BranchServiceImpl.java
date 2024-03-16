@@ -2,10 +2,12 @@ package nurbek.onlinereserve.rest.service.impl;
 
 // Abduraximov Nurbek  1/11/2024   4:26 PM
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.rest.entity.Branch;
 import nurbek.onlinereserve.rest.entity.BranchAddress;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
+import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.repo.BranchAddressRepository;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,5 +74,27 @@ public class BranchServiceImpl implements BranchService {
 
         return resultList;
     }
+
+    @Override
+    public ResBranch getOneBranch(ReqBranchId request) {
+
+        Optional<Branch> optionalBranch = repository.findById(request.getId());
+        if (optionalBranch.isEmpty()) {
+            throw new EntityNotFoundException("Branch not found!");
+        }
+        Branch branch = optionalBranch.get();
+
+        ResBranch resBranch = new ResBranch();
+        resBranch.setName(branch.getName());
+        resBranch.setDescription(branch.getDescription());
+        resBranch.setOpenAt(branch.getOpenAt());
+        resBranch.setCloseAt(branch.getCloseAt());
+        resBranch.setGrade(branch.getGrade());
+        resBranch.setAddress(branch.getAddress());
+
+        return resBranch;
+    }
+
+
 
 }

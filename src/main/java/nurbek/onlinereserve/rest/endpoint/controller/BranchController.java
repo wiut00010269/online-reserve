@@ -5,6 +5,7 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
+import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.service.BranchService;
@@ -29,5 +30,11 @@ public class BranchController implements BranchEndpoint {
     public ResponseEntity<?> getBranchList() {
         List<ResBranch> branchList = service.getAllBranches();
         return null;
+    }
+
+    @Override
+    public ResponseEntity<?> getBranchOne(ReqBranchId request) {
+        ResBranch oneBranch = service.getOneBranch(request);
+        return GenericResponse.success(200, "Success", oneBranch);
     }
 }
