@@ -8,7 +8,9 @@ import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
 import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
+import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.service.BranchService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,15 +23,20 @@ public class BranchController implements BranchEndpoint {
     private final BranchService service;
 
     @Override
-    public ResponseEntity<?> registerBranch(ReqRegisterBranch request) {
-        ResBranch resBranch = service.registerBranch(request);
-        return GenericResponse.success(200, "Success", resBranch);
+    public ResponseEntity<?> registerBranch(ReqRegisterBranch request) throws BadRequestException {
+        try {
+            SuccessMessage resBranch = service.registerBranch(request);
+            return GenericResponse.success(200, "Success", resBranch);
+        } catch (BadRequestException e) {
+            return GenericResponse.error(400, e.getMessage());
+        }
+
     }
 
     @Override
     public ResponseEntity<?> getBranchList() {
         List<ResBranch> branchList = service.getAllBranches();
-        return null;
+        return GenericResponse.success(200, "Success", branchList);
     }
 
     @Override

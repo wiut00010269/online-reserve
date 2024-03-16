@@ -1,4 +1,4 @@
-package nurbek.onlinereserve.rest.entity;
+package nurbek.onlinereserve.rest.entity.branch;
 
 // Abduraximov Nurbek  1/11/2024   6:56 PM
 

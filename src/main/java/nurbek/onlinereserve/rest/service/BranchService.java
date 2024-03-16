@@ -5,12 +5,14 @@ package nurbek.onlinereserve.rest.service;
 import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
+import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
+import org.apache.coyote.BadRequestException;
 
 import java.util.List;
 
 public interface BranchService {
 
-    ResBranch registerBranch(ReqRegisterBranch request);
+    SuccessMessage registerBranch(ReqRegisterBranch request) throws BadRequestException;
 
     List<ResBranch> getAllBranches();
 

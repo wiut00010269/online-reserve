@@ -3,7 +3,7 @@ package nurbek.onlinereserve.rest.payload.res;
 // Abduraximov Nurbek  1/11/2024   4:15 PM
 
 import lombok.*;
-import nurbek.onlinereserve.rest.entity.BranchAddress;
+import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 
 import java.time.LocalTime;
 
