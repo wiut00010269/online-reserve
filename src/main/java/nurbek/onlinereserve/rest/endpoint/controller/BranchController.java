@@ -20,14 +20,25 @@ public class BranchController implements BranchEndpoint {
     private final BranchService service;
 
     @Override
-    public ResponseEntity<?> registerBranch(ReqRegisterBranch request) {
-        ResBranch resBranch = service.registerBranch(request);
-        return GenericResponse.success(200, "Success", resBranch);
+    public ResponseEntity<?> registerBranch(ReqRegisterBranch request) throws BadRequestException {
+        try {
+            SuccessMessage resBranch = service.registerBranch(request);
+            return GenericResponse.success(200, "Success", resBranch);
+        } catch (BadRequestException e) {
+            return GenericResponse.error(400, e.getMessage());
+        }
+
     }
 
     @Override
     public ResponseEntity<?> getBranchList() {
         List<ResBranch> branchList = service.getAllBranches();
-        return (ResponseEntity<?>) branchList;
+        return GenericResponse.success(200, "Success", branchList);
+    }
+
+    @Override
+    public ResponseEntity<?> getBranchOne(ReqBranchId request) {
+        ResBranch oneBranch = service.getOneBranch(request);
+        return GenericResponse.success(200, "Success", oneBranch);
     }
 }

@@ -16,5 +16,6 @@ public interface BaseURI {
 
     String REGISTER = "/register";
     String LIST = "/list";
+    String GET = "/get";
 
 }

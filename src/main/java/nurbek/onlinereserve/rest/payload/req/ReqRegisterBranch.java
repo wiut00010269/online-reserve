@@ -3,6 +3,7 @@ package nurbek.onlinereserve.rest.payload.req;
 // Abduraximov Nurbek  1/11/2024   4:29 PM
 
 import lombok.*;
+import nurbek.onlinereserve.rest.enums.BranchType;
 
 import java.time.LocalTime;
 
@@ -25,6 +26,10 @@ public class ReqRegisterBranch {
 
     private LocalTime closeAt;
 
+    private BranchType type;
+
     private ReqBranchAddress reqBranchAddress;
+
+    private ReqBranchCapacity reqCapacity;
 
 }

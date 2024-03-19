@@ -1,4 +1,4 @@
-package nurbek.onlinereserve.rest.entity;
+package nurbek.onlinereserve.rest.entity.branch;
 
 // Abduraximov Nurbek  1/6/2024   4:51 PM
 
@@ -10,7 +10,6 @@ import lombok.Setter;
 import nurbek.onlinereserve.base.BaseEntityLong;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -46,5 +45,9 @@ public class Branch extends BaseEntityLong {
     private LocalTime closeAt;
 
     private String grade;
+
+    @OneToOne
+    @JoinColumn(name = "capacity_id")
+    private BranchCapacity capacity;
 
 }
