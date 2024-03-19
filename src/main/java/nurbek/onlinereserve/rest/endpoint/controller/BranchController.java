@@ -28,6 +28,6 @@ public class BranchController implements BranchEndpoint {
     @Override
     public ResponseEntity<?> getBranchList() {
         List<ResBranch> branchList = service.getAllBranches();
-        return null;
+        return (ResponseEntity<?>) branchList;
     }
 }

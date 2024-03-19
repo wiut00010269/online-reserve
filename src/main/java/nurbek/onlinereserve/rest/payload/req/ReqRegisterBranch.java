@@ -4,7 +4,6 @@ package nurbek.onlinereserve.rest.payload.req;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
