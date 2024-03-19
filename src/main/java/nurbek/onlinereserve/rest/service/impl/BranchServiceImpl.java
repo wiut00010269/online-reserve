@@ -4,6 +4,7 @@ package nurbek.onlinereserve.rest.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchCapacity;
@@ -17,7 +18,6 @@ import nurbek.onlinereserve.rest.repo.BranchAddressRepository;
 import nurbek.onlinereserve.rest.repo.BranchCapacityRepo;
 import nurbek.onlinereserve.rest.repo.BranchRepository;
 import nurbek.onlinereserve.rest.service.BranchService;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,11 +33,11 @@ public class BranchServiceImpl implements BranchService {
     private final BranchCapacityRepo capacityRepo;
 
     @Override
-    public SuccessMessage registerBranch(ReqRegisterBranch request) throws BadRequestException {
+    public SuccessMessage registerBranch(ReqRegisterBranch request) throws BranchRequestException {
 
         Optional<Branch> optionalBranch = repository.findByName(request.getName());
         if (optionalBranch.isPresent()) {
-            throw new BadRequestException("Branch already exist!");
+            throw new BranchRequestException("Branch already exist!");
         }
 
         BranchAddress branchAddress = new BranchAddress();
@@ -53,7 +53,7 @@ public class BranchServiceImpl implements BranchService {
 
         boolean isValid = this.validateCapacity(reqCapacity);
         if (!isValid) {
-            throw new BadRequestException("Invalid amount");
+            throw new BranchRequestException("Invalid amount");
         }
 
         BranchCapacity branchCapacity = new BranchCapacity();

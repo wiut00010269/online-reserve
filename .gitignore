@@ -23,8 +23,10 @@ mvnw
 mvnw.cmd
 online-reserve.iml
 
-#src/main/resources/application.properties
+src/main/resources/application.properties
+application.properties
 #src/main/resources/banner.txt
+
 
 src/main/java/nurbek/onlinereserve/Test.java
 
