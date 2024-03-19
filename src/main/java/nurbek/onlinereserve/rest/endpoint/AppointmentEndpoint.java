@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(BaseURI.API_V1_PATH + BaseURI.APPOINTMENT)
 public interface AppointmentEndpoint {
 
-
     @PostMapping()
     ResponseEntity<?> makeAppointment();
 
