@@ -41,15 +41,15 @@ public class BranchServiceImpl implements BranchService {
         }
 
         BranchAddress branchAddress = new BranchAddress();
-        branchAddress.setRegion(request.getReqBranchAddress().getRegion());
-        branchAddress.setDistrict(request.getReqBranchAddress().getDistrict());
-        branchAddress.setStreet(request.getReqBranchAddress().getStreet());
-        branchAddress.setHomeNumber(request.getReqBranchAddress().getHomeNumber());
-        branchAddress.setTarget(request.getReqBranchAddress().getTarget());
-        branchAddress.setAdditionalInfo(request.getReqBranchAddress().getAdditionalInfo());
+        branchAddress.setRegion(request.getAddress().getRegion());
+        branchAddress.setDistrict(request.getAddress().getDistrict());
+        branchAddress.setStreet(request.getAddress().getStreet());
+        branchAddress.setHomeNumber(request.getAddress().getHomeNumber());
+        branchAddress.setTarget(request.getAddress().getTarget());
+        branchAddress.setAdditionalInfo(request.getAddress().getAdditionalInfo());
         branchAddress = addressRepository.save(branchAddress);
 
-        ReqBranchCapacity reqCapacity = request.getReqCapacity();
+        ReqBranchCapacity reqCapacity = request.getCapacity();
 
         boolean isValid = this.validateCapacity(reqCapacity);
         if (!isValid) {
