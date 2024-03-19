@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nurbek.onlinereserve.base.BaseEntity;
 import nurbek.onlinereserve.base.BaseEntityLong;
 import nurbek.onlinereserve.rest.enums.AppointmentStatus;
 
@@ -30,12 +29,13 @@ public class Appointment extends BaseEntityLong {
     private String branchId;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private AppointmentStatus status;
 
     private LocalDateTime startAt;
 
     private LocalDateTime endAt;
 
-    private String depositPrice;
+    private Long depositPrice;
 
 }

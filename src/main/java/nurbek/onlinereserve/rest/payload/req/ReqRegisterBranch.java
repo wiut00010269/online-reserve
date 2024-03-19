@@ -28,8 +28,8 @@ public class ReqRegisterBranch {
 
     private BranchType type;
 
-    private ReqBranchAddress reqBranchAddress;
+    private ReqBranchAddress address;
 
-    private ReqBranchCapacity reqCapacity;
+    private ReqBranchCapacity capacity;
 
 }
