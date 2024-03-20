@@ -2,21 +2,24 @@ package nurbek.onlinereserve.rest.entity.branch;
 
 // Abduraximov Nurbek  3/16/2024   12:31 PM
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import nurbek.onlinereserve.base.BaseEntityLong;
 
 @Getter
 @Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "branch_capacity")
-public class BranchCapacity extends BaseEntityLong {
+@Table(name = "branch_original_capacity")
+public class BranchOriginalCapacity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     private Integer table2;
 
