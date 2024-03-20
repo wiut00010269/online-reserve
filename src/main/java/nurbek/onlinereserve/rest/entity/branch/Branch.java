@@ -48,6 +48,6 @@ public class Branch extends BaseEntityLong {
 
     @OneToOne
     @JoinColumn(name = "capacity_id")
-    private BranchCapacity capacity;
+    private BranchOriginalCapacity capacity;
 
 }

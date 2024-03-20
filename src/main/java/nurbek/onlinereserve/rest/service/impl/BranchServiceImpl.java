@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
-import nurbek.onlinereserve.rest.entity.branch.BranchCapacity;
+import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
 import nurbek.onlinereserve.rest.payload.req.ReqBranchCapacity;
 import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
@@ -15,7 +15,7 @@ import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.BranchAddressRepository;
-import nurbek.onlinereserve.rest.repo.BranchCapacityRepo;
+import nurbek.onlinereserve.rest.repo.BranchOriginalCapacityRepo;
 import nurbek.onlinereserve.rest.repo.BranchRepository;
 import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class BranchServiceImpl implements BranchService {
 
     private final BranchRepository repository;
     private final BranchAddressRepository addressRepository;
-    private final BranchCapacityRepo capacityRepo;
+    private final BranchOriginalCapacityRepo capacityRepo;
 
     @Override
     public SuccessMessage registerBranch(ReqRegisterBranch request) throws BranchRequestException {
@@ -56,7 +56,7 @@ public class BranchServiceImpl implements BranchService {
             throw new BranchRequestException("Invalid amount");
         }
 
-        BranchCapacity branchCapacity = new BranchCapacity();
+        BranchOriginalCapacity branchCapacity = new BranchOriginalCapacity();
         branchCapacity.setTable2(reqCapacity.getTable2());
         branchCapacity.setTable4(reqCapacity.getTable4());
         branchCapacity.setTable8(reqCapacity.getTable8());
