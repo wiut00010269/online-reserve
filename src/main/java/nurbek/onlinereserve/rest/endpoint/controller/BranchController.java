@@ -4,13 +4,13 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GenericResponse;
+import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
 import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.service.BranchService;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,14 +23,15 @@ public class BranchController implements BranchEndpoint {
     private final BranchService service;
 
     @Override
-    public ResponseEntity<?> registerBranch(ReqRegisterBranch request) throws BadRequestException {
+    public ResponseEntity<?> registerBranch(ReqRegisterBranch request) {
         try {
             SuccessMessage resBranch = service.registerBranch(request);
             return GenericResponse.success(200, "Success", resBranch);
-        } catch (BadRequestException e) {
+        } catch (BranchRequestException e) {
             return GenericResponse.error(400, e.getMessage());
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
         }
-
     }
 
     @Override
@@ -44,4 +45,5 @@ public class BranchController implements BranchEndpoint {
         ResBranch oneBranch = service.getOneBranch(request);
         return GenericResponse.success(200, "Success", oneBranch);
     }
+
 }
