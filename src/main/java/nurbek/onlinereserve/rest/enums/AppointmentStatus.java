@@ -12,4 +12,8 @@ public enum AppointmentStatus {
 
     PAID,
 
+    FINISHED,
+
+    CANCELED
+
 }
