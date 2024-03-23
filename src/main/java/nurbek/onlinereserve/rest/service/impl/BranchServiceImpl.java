@@ -5,6 +5,7 @@ package nurbek.onlinereserve.rest.service.impl;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
+import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
@@ -14,6 +15,7 @@ import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
+import nurbek.onlinereserve.rest.repo.ActiveCapacityRepo;
 import nurbek.onlinereserve.rest.repo.BranchAddressRepository;
 import nurbek.onlinereserve.rest.repo.BranchOriginalCapacityRepo;
 import nurbek.onlinereserve.rest.repo.BranchRepository;
@@ -31,6 +33,7 @@ public class BranchServiceImpl implements BranchService {
     private final BranchRepository repository;
     private final BranchAddressRepository addressRepository;
     private final BranchOriginalCapacityRepo capacityRepo;
+    private final ActiveCapacityRepo activeCapacityRepo;
 
     @Override
     public SuccessMessage registerBranch(ReqRegisterBranch request) throws BranchRequestException {
@@ -67,6 +70,17 @@ public class BranchServiceImpl implements BranchService {
         branchCapacity.setToyxonaCapacity(reqCapacity.getToyxonaCapacity());
         branchCapacity = capacityRepo.save(branchCapacity);
 
+        ActiveCapacity activeCapacity = new ActiveCapacity();
+        activeCapacity.setTable2(reqCapacity.getTable2());
+        activeCapacity.setTable4(reqCapacity.getTable4());
+        activeCapacity.setTable8(reqCapacity.getTable8());
+        activeCapacity.setTable12(reqCapacity.getTable12());
+        activeCapacity.setTable20(reqCapacity.getTable20());
+        activeCapacity.setSpecialRoom(reqCapacity.getSpecialRoom());
+        activeCapacity.setHall(reqCapacity.getHall());
+        activeCapacity.setToyxonaCapacity(reqCapacity.getToyxonaCapacity());
+        activeCapacity = activeCapacityRepo.save(activeCapacity);
+
         Branch branch = new Branch();
         branch.setName(request.getName());
         branch.setDescription(request.getDescription());
@@ -77,6 +91,7 @@ public class BranchServiceImpl implements BranchService {
         branch.setCloseAt(request.getCloseAt());
         branch.setAddress(branchAddress);
         branch.setCapacity(branchCapacity);
+        branch.setActiveCapacity(activeCapacity);
 
         repository.save(branch);
 

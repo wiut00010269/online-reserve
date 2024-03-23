@@ -23,8 +23,7 @@ mvnw
 mvnw.cmd
 online-reserve.iml
 
-src/main/resources/application.properties
-application.properties
+!**/src/main/resources/application.yml
 #src/main/resources/banner.txt
 
 
