@@ -3,11 +3,12 @@ package nurbek.onlinereserve.rest.service.impl;
 // Abduraximov Nurbek  1/9/2024   11:49 AM
 
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.exception.AppointmentRequestException;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.entity.Appointment;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
-import nurbek.onlinereserve.rest.enums.AppointmentStatus;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.ActiveCapacityRepo;
@@ -18,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import static nurbek.onlinereserve.rest.enums.AppointmentStatus.BOOKED;
+import static nurbek.onlinereserve.rest.enums.AppointmentStatus.CANCELED;
 
 @Service
 @RequiredArgsConstructor
@@ -85,13 +89,31 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = new Appointment();
         appointment.setUserId(null);  // TODO: 3/23/2024 user set from security
         appointment.setBranchId(branch.getUuid().toString());
-        appointment.setStatus(AppointmentStatus.INPROCESS);
+        appointment.setStatus(BOOKED);
         appointment.setStartAt(request.getStartTime());
         appointment.setEndAt(request.getStartTime().plus(request.getDuration()));
         appointment.setDepositPrice(0L);  // TODO: 3/23/2024 should be available soon
+        appointment.setTableType(request.getTableType());
         appointmentRepo.save(appointment);
 
         return new SuccessMessage("Successfully booked!");
+    }
+
+    @Override
+    public SuccessMessage cancelAppointment(ReqUUID reqUUID) throws AppointmentRequestException {
+
+        Optional<Appointment> optionalAppointment = appointmentRepo.findByUuid(reqUUID.getUuid());
+        if (optionalAppointment.isEmpty()) {
+            throw new AppointmentRequestException("Appointment not found!");
+        }
+        Appointment appointment = optionalAppointment.get();
+
+        if (BOOKED.equals(appointment.getStatus())) {
+            appointment.setStatus(CANCELED);
+            appointmentRepo.save(appointment);
+            return new SuccessMessage("Appointment successfully canceled!");
+        }
+        return new SuccessMessage("Appointment already finished or canceled!");
     }
 
 }

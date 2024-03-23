@@ -4,9 +4,11 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GenericResponse;
+import nurbek.onlinereserve.config.exception.AppointmentRequestException;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.AppointmentEndpoint;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.BranchRepository;
@@ -35,16 +37,17 @@ public class AppointmentController implements AppointmentEndpoint {
         }
     }
 
-//    @Override
-//    public ResponseEntity<?> makeAppointment(ReqAppointment reqAppointment) throws BranchRequestException {
-//
-//        Optional<Branch> optionalBranch = branchRepository.findByUuid(UUID.fromString(reqAppointment.getBranchUuid()));
-//        if (optionalBranch.isEmpty()) {
-//            throw new BranchRequestException("Branch not found!");
-//        }
-//        Branch branch = optionalBranch.get();
-//
-//
-//        return null;
-//    }
+    @Override
+    public ResponseEntity<?> cancelAppointment(ReqUUID reqUUID) {
+        try {
+            SuccessMessage result = service.cancelAppointment(reqUUID);
+            return GenericResponse.success(200, "Success", result);
+        } catch (AppointmentRequestException e) {
+            return GenericResponse.error(400, e.getMessage());
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
+
 }
