@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(BaseURI.API_V1_PATH + BaseURI.BRANCH)
 public interface BranchEndpoint {
 
+    // For Admin Panel
+
     @PostMapping(BaseURI.REGISTER)
     ResponseEntity<?> registerBranch(@RequestBody ReqRegisterBranch request) throws BadRequestException;
 
@@ -23,5 +25,8 @@ public interface BranchEndpoint {
 
     @GetMapping(BaseURI.GET)
     ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request);
+
+
+
 
 }
