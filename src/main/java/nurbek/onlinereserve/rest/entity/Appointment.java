@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nurbek.onlinereserve.base.BaseEntityLong;
 import nurbek.onlinereserve.rest.enums.AppointmentStatus;
+import nurbek.onlinereserve.rest.enums.TableType;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -37,5 +38,9 @@ public class Appointment extends BaseEntityLong {
     private LocalDateTime endAt;
 
     private Long depositPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "table_type")
+    private TableType tableType;
 
 }
