@@ -23,7 +23,7 @@ public interface BranchEndpoint {
     @GetMapping(BaseURI.LIST)
     ResponseEntity<?> getBranchList();
 
-    @GetMapping(BaseURI.GET)
+    @PostMapping(BaseURI.GET)
     ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request);
 
 

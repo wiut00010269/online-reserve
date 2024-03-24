@@ -7,17 +7,13 @@ import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.config.exception.AppointmentRequestException;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.AppointmentEndpoint;
-import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
-import nurbek.onlinereserve.rest.repo.BranchRepository;
 import nurbek.onlinereserve.rest.service.AppointmentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor

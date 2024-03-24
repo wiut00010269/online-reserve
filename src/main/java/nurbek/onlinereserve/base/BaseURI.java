@@ -13,10 +13,12 @@ public interface BaseURI {
 
     String APPOINTMENT = "/appointment";
     String BRANCH = "/branch";
+    String COMMENT = "/comment";
 
     String REGISTER = "/register";
     String LIST = "/list";
     String GET = "/get";
     String CANCEL = "/cancel";
+    String WRITE = "/write";
 
 }
