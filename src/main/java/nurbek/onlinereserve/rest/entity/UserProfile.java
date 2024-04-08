@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import nurbek.onlinereserve.base.BaseEntityLong;
+import nurbek.onlinereserve.rest.enums.UserRole;
 import nurbek.onlinereserve.rest.enums.UserStatus;
 
 import java.util.UUID;
@@ -34,11 +35,15 @@ public class UserProfile extends BaseEntityLong {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(unique = true)
+    @Column(name = "username", unique = true)
     private String username;
 
     private String password;
+
+    @Column(name = "role")
+    private UserRole role;
 
 }
