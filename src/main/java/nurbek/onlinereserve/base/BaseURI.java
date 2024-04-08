@@ -10,6 +10,7 @@ public interface BaseURI {
 
     String API_V1_PATH = API + V1;
     String API_V2_PATH = API + V2;
+    String USER = "/user";
 
     String APPOINTMENT = "/appointment";
     String BRANCH = "/branch";
