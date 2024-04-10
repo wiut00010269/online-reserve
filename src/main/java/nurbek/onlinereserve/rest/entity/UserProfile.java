@@ -1,7 +1,5 @@
 package nurbek.onlinereserve.rest.entity;
 
-// Abduraximov Nurbek  1/6/2024   3:43 PM
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,15 +33,14 @@ public class UserProfile extends BaseEntityLong {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "username", unique = true)
-    private String username;
-
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
 }
