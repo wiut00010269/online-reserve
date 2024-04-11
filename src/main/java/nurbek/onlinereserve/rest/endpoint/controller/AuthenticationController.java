@@ -4,13 +4,12 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.base.BaseURI;
-import nurbek.onlinereserve.config.security.JwtUtils;
+import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.auth.ReqAuthentication;
-import nurbek.onlinereserve.rest.service.impl.UserProfileServiceImpl;
+import nurbek.onlinereserve.rest.payload.req.auth.ReqRegisterUser;
+import nurbek.onlinereserve.rest.payload.res.auth.ResAuthentication;
+import nurbek.onlinereserve.rest.service.impl.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,22 +20,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(BaseURI.API_V1_PATH + BaseURI.AUTH)
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserProfileServiceImpl userProfileService;
-    private final JwtUtils jwtUtils;
+    private final AuthenticationService service;
 
     @PostMapping(BaseURI.AUTHENTICATE)
-    public ResponseEntity<String> authenticate (
+    public ResponseEntity<ResAuthentication> authenticate (
             @RequestBody ReqAuthentication request
     ) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-        final UserDetails user = userProfileService.loadUserByUsername(request.getEmail());
-        if (user != null) {
-            return ResponseEntity.ok(jwtUtils.generateToken(user));
-        }
-        return ResponseEntity.status(400).body("Some error occurred");
+        return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @PostMapping(BaseURI.REGISTER)
+    public ResponseEntity<ResAuthentication> register (
+            @RequestBody ReqRegisterUser request
+    ) throws CustomException {
+        return ResponseEntity.ok(service.registerUser(request));
     }
 
 }

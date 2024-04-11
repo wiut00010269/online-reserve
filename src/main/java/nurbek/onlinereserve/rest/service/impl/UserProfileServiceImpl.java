@@ -28,7 +28,7 @@ public class UserProfileServiceImpl implements UserDetailsService {
         return createUserDetails(userProfile);
     }
 
-    private UserDetails createUserDetails(UserProfile userProfile) {
+    public UserDetails createUserDetails(UserProfile userProfile) {
         return new org.springframework.security.core.userdetails.User(
                 userProfile.getEmail(),
                 userProfile.getPassword(),
