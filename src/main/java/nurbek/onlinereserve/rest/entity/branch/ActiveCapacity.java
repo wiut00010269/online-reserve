@@ -35,5 +35,4 @@ public class ActiveCapacity {
 
     private Integer hall;
 
-    private Integer toyxonaCapacity;
 }

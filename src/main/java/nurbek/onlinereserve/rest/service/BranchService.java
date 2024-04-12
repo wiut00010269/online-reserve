@@ -3,8 +3,8 @@ package nurbek.onlinereserve.rest.service;
 // Abduraximov Nurbek  1/11/2024   4:25 PM
 
 import nurbek.onlinereserve.config.exception.BranchRequestException;
-import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
-import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 

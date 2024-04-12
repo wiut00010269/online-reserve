@@ -35,5 +35,4 @@ public class BranchOriginalCapacity {
 
     private Integer hall;
 
-    private Integer toyxonaCapacity;
 }

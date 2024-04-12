@@ -1,10 +1,11 @@
-package nurbek.onlinereserve.rest.payload.req;
+package nurbek.onlinereserve.rest.payload.req.branch;
 
-// Abduraximov Nurbek  1/11/2024   4:29 PM
+// Abduraximov Nurbek  4/12/2024   8:00 PM
 
 import lombok.*;
 import nurbek.onlinereserve.rest.enums.BranchType;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 @Getter
@@ -12,7 +13,9 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqRegisterBranch {
+public class ReqUpdateBranch implements Serializable {
+
+    private Long id;
 
     private String name;
 

@@ -1,4 +1,4 @@
-package nurbek.onlinereserve.rest.payload.req;
+package nurbek.onlinereserve.rest.payload.req.branch;
 
 // Abduraximov Nurbek  2/23/2024   6:10 PM
 
