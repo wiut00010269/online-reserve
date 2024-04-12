@@ -14,13 +14,15 @@ public interface BaseURI {
     String USER = "/user";
     String AUTH = "/auth";
     String AUTHENTICATE = "/authenticate";
+    String MY = "/my";
 
     String APPOINTMENT = "/appointment";
     String BRANCH = "/branch";
     String COMMENT = "/comment";
 
-    String REGISTER = "/register";
     String LIST = "/list";
+
+    String REGISTER = "/register";
     String GET = "/get";
     String CANCEL = "/cancel";
     String WRITE = "/write";

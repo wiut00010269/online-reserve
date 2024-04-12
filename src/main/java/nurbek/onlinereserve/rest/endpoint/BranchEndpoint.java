@@ -5,6 +5,7 @@ package nurbek.onlinereserve.rest.endpoint;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,10 @@ public interface BranchEndpoint {
     ResponseEntity<?> registerBranch(@RequestBody ReqRegisterBranch request) throws BadRequestException;
 
     @PostMapping(BaseURI.UPDATE)
-    ResponseEntity<?> updateBranch(@RequestBody ReqRegisterBranch request) throws BadRequestException;
+    ResponseEntity<?> updateBranch(@RequestBody ReqUpdateBranch request);
+
+    @GetMapping(BaseURI.MY + BaseURI.BRANCH + BaseURI.LIST)
+    ResponseEntity<?> myBranches();
 
 
     // For User side
