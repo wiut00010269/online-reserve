@@ -4,6 +4,7 @@ package nurbek.onlinereserve.rest.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.core.GlobalVar;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
@@ -34,6 +35,7 @@ public class BranchServiceImpl implements BranchService {
     private final BranchAddressRepository addressRepository;
     private final BranchOriginalCapacityRepo capacityRepo;
     private final ActiveCapacityRepo activeCapacityRepo;
+    private final GlobalVar globalVar;
 
     @Override
     public SuccessMessage registerBranch(ReqRegisterBranch request) throws BranchRequestException {
@@ -42,6 +44,8 @@ public class BranchServiceImpl implements BranchService {
         if (optionalBranch.isPresent()) {
             throw new BranchRequestException("Branch already exist!");
         }
+
+        String currentUserUUID = globalVar.getCurrentUserUUID();
 
         BranchAddress branchAddress = new BranchAddress();
         branchAddress.setRegion(request.getAddress().getRegion());
@@ -84,8 +88,8 @@ public class BranchServiceImpl implements BranchService {
         Branch branch = new Branch();
         branch.setName(request.getName());
         branch.setDescription(request.getDescription());
-        branch.setManager1Id(request.getManager1Id());
-        branch.setManager2Id(request.getManager2Id());
+        branch.setManager1Id(currentUserUUID);
+        branch.setAdditionalPhone(request.getAdditionalPhone());
         branch.setStatus(BranchStatus.INACTIVE);
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());

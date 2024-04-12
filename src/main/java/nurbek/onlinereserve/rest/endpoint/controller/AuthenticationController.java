@@ -4,6 +4,7 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.base.BaseURI;
+import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.auth.ReqAuthentication;
 import nurbek.onlinereserve.rest.payload.req.auth.ReqRegisterUser;
@@ -30,10 +31,12 @@ public class AuthenticationController {
     }
 
     @PostMapping(BaseURI.REGISTER)
-    public ResponseEntity<ResAuthentication> register (
-            @RequestBody ReqRegisterUser request
-    ) throws CustomException {
-        return ResponseEntity.ok(service.registerUser(request));
+    public ResponseEntity<?> register (@RequestBody ReqRegisterUser request) {
+        try {
+            return ResponseEntity.ok(service.registerUser(request));
+        } catch (CustomException e) {
+            return GenericResponse.error(500, e.getMessage());
+        }
     }
 
 }

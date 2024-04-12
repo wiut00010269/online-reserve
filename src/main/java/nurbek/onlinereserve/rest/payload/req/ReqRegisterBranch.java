@@ -18,9 +18,7 @@ public class ReqRegisterBranch {
 
     private String description;
 
-    private String manager1Id;
-
-    private String manager2Id;
+    private String additionalPhone;
 
     private LocalTime openAt;
 
