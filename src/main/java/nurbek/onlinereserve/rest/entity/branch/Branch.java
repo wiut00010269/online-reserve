@@ -35,7 +35,7 @@ public class Branch extends BaseEntityLong {
 
     private String manager1Id;
 
-    private String manager2Id;
+    private String additionalPhone;
 
     @Enumerated(EnumType.STRING)
     private BranchStatus status;

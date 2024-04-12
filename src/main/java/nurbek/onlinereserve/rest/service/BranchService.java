@@ -7,7 +7,6 @@ import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
-import org.apache.coyote.BadRequestException;
 
 import java.util.List;
 
