@@ -4,7 +4,7 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.rest.endpoint.CommentEndpoint;
-import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -11,9 +11,9 @@ import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
-import nurbek.onlinereserve.rest.payload.req.ReqBranchCapacity;
-import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
-import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchCapacity;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.res.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.ActiveCapacityRepo;
@@ -71,7 +71,6 @@ public class BranchServiceImpl implements BranchService {
         branchCapacity.setTable20(reqCapacity.getTable20());
         branchCapacity.setSpecialRoom(reqCapacity.getSpecialRoom());
         branchCapacity.setHall(reqCapacity.getHall());
-        branchCapacity.setToyxonaCapacity(reqCapacity.getToyxonaCapacity());
         branchCapacity = capacityRepo.save(branchCapacity);
 
         ActiveCapacity activeCapacity = new ActiveCapacity();
@@ -82,7 +81,6 @@ public class BranchServiceImpl implements BranchService {
         activeCapacity.setTable20(reqCapacity.getTable20());
         activeCapacity.setSpecialRoom(reqCapacity.getSpecialRoom());
         activeCapacity.setHall(reqCapacity.getHall());
-        activeCapacity.setToyxonaCapacity(reqCapacity.getToyxonaCapacity());
         activeCapacity = activeCapacityRepo.save(activeCapacity);
 
         Branch branch = new Branch();
@@ -110,8 +108,7 @@ public class BranchServiceImpl implements BranchService {
                 reqCapacity.getTable12() >= 0 &&
                 reqCapacity.getTable20() >= 0 &&
                 reqCapacity.getSpecialRoom() >= 0 &&
-                reqCapacity.getHall() >= 0 &&
-                reqCapacity.getToyxonaCapacity() >= 0;
+                reqCapacity.getHall() >= 0;
     }
 
     @Override

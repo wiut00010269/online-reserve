@@ -24,5 +24,6 @@ public interface BaseURI {
     String GET = "/get";
     String CANCEL = "/cancel";
     String WRITE = "/write";
+    String UPDATE = "/update";
 
 }

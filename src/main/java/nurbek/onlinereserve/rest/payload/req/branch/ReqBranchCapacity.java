@@ -1,4 +1,4 @@
-package nurbek.onlinereserve.rest.payload.req;
+package nurbek.onlinereserve.rest.payload.req.branch;
 
 // Abduraximov Nurbek  3/16/2024   12:41 PM
 
@@ -24,7 +24,5 @@ public class ReqBranchCapacity {
     private Integer specialRoom;
 
     private Integer hall;
-
-    private Integer toyxonaCapacity;
 
 }

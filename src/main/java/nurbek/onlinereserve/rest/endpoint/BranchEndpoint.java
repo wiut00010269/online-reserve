@@ -3,8 +3,8 @@ package nurbek.onlinereserve.rest.endpoint;
 // Abduraximov Nurbek  1/11/2024   4:11 PM
 
 import nurbek.onlinereserve.base.BaseURI;
-import nurbek.onlinereserve.rest.payload.req.ReqBranchId;
-import nurbek.onlinereserve.rest.payload.req.ReqRegisterBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +19,12 @@ public interface BranchEndpoint {
 
     @PostMapping(BaseURI.REGISTER)
     ResponseEntity<?> registerBranch(@RequestBody ReqRegisterBranch request) throws BadRequestException;
+
+    @PostMapping(BaseURI.UPDATE)
+    ResponseEntity<?> updateBranch(@RequestBody ReqRegisterBranch request) throws BadRequestException;
+
+
+    // For User side
 
     @GetMapping(BaseURI.LIST)
     ResponseEntity<?> getBranchList();
