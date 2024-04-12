@@ -1,9 +1,10 @@
-package nurbek.onlinereserve.rest.payload.req.branch;
+package nurbek.onlinereserve.rest.payload.res.branch;
 
-// Abduraximov Nurbek  4/12/2024   8:00 PM
+// Abduraximov Nurbek  4/12/2024   9:38 PM
 
 import lombok.*;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
+import nurbek.onlinereserve.rest.payload.res.ResAddress;
 
 import java.io.Serializable;
 import java.time.LocalTime;
@@ -13,7 +14,7 @@ import java.time.LocalTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReqUpdateBranch implements Serializable {
+public class ResMyBranch implements Serializable {
 
     private Long id;
 
@@ -21,16 +22,14 @@ public class ReqUpdateBranch implements Serializable {
 
     private String description;
 
-    private String additionalPhone;
-
     private LocalTime openAt;
 
     private LocalTime closeAt;
 
     private BranchStatus status;
 
-    private ReqBranchAddress address;
+    private String grade;
 
-    private ReqBranchCapacity capacity;
+    private ResAddress address;
 
 }

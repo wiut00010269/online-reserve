@@ -20,4 +20,6 @@ public interface BranchRepository extends BaseRepositoryLong<Branch> {
 
     Optional<Branch> findByUuid(UUID uuid);
 
+    List<Branch> findAllByManager1Id(String manager1Id);
+
 }

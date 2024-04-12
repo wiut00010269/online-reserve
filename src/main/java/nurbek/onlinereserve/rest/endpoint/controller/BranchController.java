@@ -8,10 +8,11 @@ import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
-import nurbek.onlinereserve.rest.payload.res.ResBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
+import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
+import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.service.BranchService;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,9 +39,25 @@ public class BranchController implements BranchEndpoint {
     }
 
     @Override
-    public ResponseEntity<?> updateBranch(ReqRegisterBranch request) throws BadRequestException {
-        return null;
+    public ResponseEntity<?> updateBranch(ReqUpdateBranch request) {
+        try {
+            SuccessMessage resBranch = service.updateBranch(request);
+            return GenericResponse.success(200, "Success", resBranch);
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
     }
+
+    @Override
+    public ResponseEntity<?> myBranches() {
+        try {
+            List<ResMyBranch> myBranchList = service.myBranchList();
+            return GenericResponse.success(200, "Success", myBranchList);
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
 
     ///*------------------------------- User Side -------------------------------------*///////
 
