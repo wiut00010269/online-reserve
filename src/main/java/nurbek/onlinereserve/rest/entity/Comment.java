@@ -22,6 +22,8 @@ public class Comment extends BaseEntityLong {
 
     private String branchUuid;
 
+    private String commenter;
+
     private String comment;
 
     private Double grade;

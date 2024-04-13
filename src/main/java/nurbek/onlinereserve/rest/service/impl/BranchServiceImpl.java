@@ -205,6 +205,7 @@ public class BranchServiceImpl implements BranchService {
         for (Branch branch : all) {
 
             ResBranch resBranch = new ResBranch();
+            resBranch.setBranchUuid(branch.getUuid().toString());
             resBranch.setName(branch.getName());
             resBranch.setDescription(branch.getDescription());
             resBranch.setOpenAt(branch.getOpenAt());

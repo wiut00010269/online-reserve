@@ -46,5 +46,17 @@ public class GlobalVar {
         return userProfile.getUuid().toString();
     }
 
+    public UserProfile getCurrentUser() {
+
+        String currentUsername = getCurrentUsername();
+
+        Optional<UserProfile> optionalUser = userProfileRepo.findByEmail(currentUsername);
+        if (optionalUser.isEmpty()) {
+            throw new EntityNotFoundException("User not found!");
+        }
+
+        return optionalUser.get();
+    }
+
 
 }

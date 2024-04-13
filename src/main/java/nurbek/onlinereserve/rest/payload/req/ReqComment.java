@@ -13,6 +13,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ReqComment implements Serializable {
 
+    private String branchUuid;
+
     private String comment;
 
     private Double grade;
