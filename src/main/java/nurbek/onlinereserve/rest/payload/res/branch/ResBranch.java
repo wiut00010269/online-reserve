@@ -14,6 +14,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class ResBranch {
 
+    private String branchUuid;
+
     private String name;
 
     private String description;

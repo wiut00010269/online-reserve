@@ -10,7 +10,6 @@ public enum TableType {
     TABLE12,
     TABLE20,
     SPECIAL_ROOM,
-    HALL,
-    TOYXONA
+    HALL
 
 }
