@@ -22,7 +22,7 @@ public class Comment extends BaseEntityLong {
 
     private String branchUuid;
 
-    private String user;
+    private String commenter;
 
     private String comment;
 

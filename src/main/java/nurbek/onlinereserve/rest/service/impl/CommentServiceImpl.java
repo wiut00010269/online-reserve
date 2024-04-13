@@ -64,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserUuid(userUuid.toString());
         comment.setBranchUuid(branchId);
         comment.setGrade(request.getGrade());
-        comment.setUser(userProfile.getFirstName() + " " + userProfile.getLastName());
+        comment.setCommenter(userProfile.getFirstName() + " " + userProfile.getLastName());
         repository.save(comment);
 
         return new SuccessMessage("Done!");
