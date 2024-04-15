@@ -6,26 +6,28 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GlobalVar;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
+import nurbek.onlinereserve.rest.entity.Appointment;
+import nurbek.onlinereserve.rest.entity.Comment;
+import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
+import nurbek.onlinereserve.rest.enums.AppointmentStatus;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.ResAddress;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
-import nurbek.onlinereserve.rest.repo.ActiveCapacityRepo;
-import nurbek.onlinereserve.rest.repo.BranchAddressRepository;
-import nurbek.onlinereserve.rest.repo.BranchOriginalCapacityRepo;
-import nurbek.onlinereserve.rest.repo.BranchRepository;
+import nurbek.onlinereserve.rest.repo.*;
 import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +37,8 @@ public class BranchServiceImpl implements BranchService {
     private final BranchAddressRepository addressRepository;
     private final BranchOriginalCapacityRepo capacityRepo;
     private final ActiveCapacityRepo activeCapacityRepo;
+    private final AppointmentRepository appointmentRepository;
+    private final CommentRepository commentRepository;
 
     private final GlobalVar globalVar;
 
@@ -237,6 +241,41 @@ public class BranchServiceImpl implements BranchService {
         resBranch.setAddress(branch.getAddress());
 
         return resBranch;
+    }
+
+    @Override
+    public SuccessMessage rateBranch(ReqRate request) throws BranchRequestException {
+
+        UserProfile userProfile = globalVar.getCurrentUser();
+        UUID userUuid = userProfile.getUuid();
+
+        Optional<Branch> optionalBranch = repository.findByUuid(UUID.fromString(request.getBranchUuid()));
+        if (optionalBranch.isEmpty()) {
+            throw new BranchRequestException("Branch not found!");
+        }
+        Branch branch = optionalBranch.get();
+        String branchId = branch.getUuid().toString();
+
+        Optional<Appointment> optionalAppointment =
+                appointmentRepository.findTopByUserIdAndBranchIdAndStatusOrderByCreatedAt(userUuid.toString(), branchId, AppointmentStatus.FINISHED);
+        if (optionalAppointment.isEmpty()) {
+            throw new EntityNotFoundException("Appointment not found!");
+        }
+
+        List<Comment> allComments = commentRepository.findAllByBranchUuidAndGradeNotEmpty(branchId);
+        double commentsCount = allComments.size();
+        double grade = Double.parseDouble(branch.getGrade());
+
+        double updateGrade = ((commentsCount * grade + request.getRate()) / (commentsCount + 1));
+        branch.setGrade(Double.toString(updateGrade));
+        repository.save(branch);
+
+        Comment marking = new Comment();
+        marking.setUserUuid(userUuid.toString());
+        marking.setBranchUuid(branchId);
+        marking.setCommenter(userProfile.getFirstName() + " " + userProfile.getLastName());
+
+        return null;
     }
 
 }
