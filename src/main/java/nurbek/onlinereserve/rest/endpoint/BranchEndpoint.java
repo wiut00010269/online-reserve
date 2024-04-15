@@ -3,7 +3,9 @@ package nurbek.onlinereserve.rest.endpoint;
 // Abduraximov Nurbek  1/11/2024   4:11 PM
 
 import nurbek.onlinereserve.base.BaseURI;
+import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
 import org.apache.coyote.BadRequestException;
@@ -36,7 +38,7 @@ public interface BranchEndpoint {
     @PostMapping(BaseURI.GET)
     ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request);
 
-
-
+    @PostMapping(BaseURI.RATE)
+    ResponseEntity<?> rateBranch(@RequestBody ReqRate request) throws BranchRequestException;
 
 }

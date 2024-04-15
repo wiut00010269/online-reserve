@@ -17,6 +17,4 @@ public class ReqComment implements Serializable {
 
     private String comment;
 
-    private Double grade;
-
 }

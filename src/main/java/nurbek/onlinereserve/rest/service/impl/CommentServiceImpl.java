@@ -19,7 +19,6 @@ import nurbek.onlinereserve.rest.repo.CommentRepository;
 import nurbek.onlinereserve.rest.service.CommentService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,19 +50,10 @@ public class CommentServiceImpl implements CommentService {
             throw new EntityNotFoundException("Appointment not found!");
         }
 
-        List<Comment> allComments = repository.findAllByBranchUuid(branchId);
-        double commentsCount = allComments.size();
-        double grade = Double.parseDouble(branch.getGrade());
-
-        double updateGrade = ((commentsCount * grade + request.getGrade()) / (commentsCount + 1));
-        branch.setGrade(Double.toString(updateGrade));
-        branchRepository.save(branch);
-
         Comment comment = new Comment();
         comment.setComment(request.getComment());
         comment.setUserUuid(userUuid.toString());
         comment.setBranchUuid(branchId);
-        comment.setGrade(request.getGrade());
         comment.setCommenter(userProfile.getFirstName() + " " + userProfile.getLastName());
         repository.save(comment);
 
