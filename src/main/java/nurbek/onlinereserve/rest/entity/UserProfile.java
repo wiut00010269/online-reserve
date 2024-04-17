@@ -1,6 +1,5 @@
 package nurbek.onlinereserve.rest.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +8,7 @@ import nurbek.onlinereserve.base.BaseEntityLong;
 import nurbek.onlinereserve.rest.enums.UserRole;
 import nurbek.onlinereserve.rest.enums.UserStatus;
 
+import javax.persistence.*;
 import java.util.UUID;
 
 @Getter

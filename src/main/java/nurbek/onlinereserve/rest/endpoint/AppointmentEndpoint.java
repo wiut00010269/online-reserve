@@ -19,8 +19,7 @@ public interface AppointmentEndpoint {
     @PostMapping()
     ResponseEntity<?> makeAppointment(@RequestBody ReqAppointment reqAppointment) throws BranchRequestException;
 
-    @PostMapping(BaseURI.CANCEL)
+ @PostMapping(BaseURI.CANCEL)
     ResponseEntity<?> cancelAppointment(@RequestBody ReqUUID reqUUID) throws BranchRequestException;
-
 
 }

@@ -2,10 +2,10 @@ package nurbek.onlinereserve.rest.service.impl;
 
 // Abduraximov Nurbek  3/24/2024   5:59 PM
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GlobalVar;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
+import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.entity.Appointment;
 import nurbek.onlinereserve.rest.entity.Comment;
 import nurbek.onlinereserve.rest.entity.UserProfile;
@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
     private final GlobalVar globalVar;
 
     @Override
-    public SuccessMessage writeReview(ReqComment request) throws BranchRequestException {
+    public SuccessMessage writeReview(ReqComment request) throws BranchRequestException, CustomException {
 
         UserProfile userProfile = globalVar.getCurrentUser();
         UUID userUuid = userProfile.getUuid();
@@ -47,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
         Optional<Appointment> optionalAppointment =
                 appointmentRepository.findTopByUserIdAndBranchIdAndStatusOrderByCreatedAt(userUuid.toString(), branchId, AppointmentStatus.FINISHED);
         if (optionalAppointment.isEmpty()) {
-            throw new EntityNotFoundException("Appointment not found!");
+            throw new CustomException("Appointment not found!");
         }
 
         Comment comment = new Comment();

@@ -2,13 +2,13 @@ package nurbek.onlinereserve.rest.endpoint;
 
 // Abduraximov Nurbek  1/11/2024   4:11 PM
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +21,7 @@ public interface BranchEndpoint {
     // For Admin Panel
 
     @PostMapping(BaseURI.REGISTER)
-    ResponseEntity<?> registerBranch(@RequestBody ReqRegisterBranch request) throws BadRequestException;
+    ResponseEntity<?> registerBranch(@RequestBody ReqRegisterBranch request);
 
     @PostMapping(BaseURI.UPDATE)
     ResponseEntity<?> updateBranch(@RequestBody ReqUpdateBranch request);
@@ -32,11 +32,12 @@ public interface BranchEndpoint {
 
     // For User side
 
+    @Tag(name = "get", description = "GET methods of Employee APIs")
     @GetMapping(BaseURI.LIST)
     ResponseEntity<?> getBranchList();
 
     @PostMapping(BaseURI.GET)
-    ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request);
+    ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request) throws BranchRequestException;
 
     @PostMapping(BaseURI.RATE)
     ResponseEntity<?> rateBranch(@RequestBody ReqRate request) throws BranchRequestException;

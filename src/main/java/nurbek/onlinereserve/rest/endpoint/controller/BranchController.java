@@ -69,7 +69,7 @@ public class BranchController implements BranchEndpoint {
     }
 
     @Override
-    public ResponseEntity<?> getBranchOne(ReqBranchId request) {
+    public ResponseEntity<?> getBranchOne(ReqBranchId request) throws BranchRequestException {
         ResBranch oneBranch = service.getOneBranch(request);
         return GenericResponse.success(200, "Success", oneBranch);
     }

@@ -13,6 +13,6 @@ public interface CommentRepository extends BaseRepositoryLong<Comment> {
 
     List<Comment> findAllByBranchUuid(String branchUuid);
 
-    List<Comment> findAllByBranchUuidAndGradeNotEmpty(String branchUuid);
+//    List<Comment> findAllByBranchUuidAndGradeNotEmpty(String branchUuid);
 
 }

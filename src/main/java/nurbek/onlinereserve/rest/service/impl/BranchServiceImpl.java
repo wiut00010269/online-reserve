@@ -2,18 +2,14 @@ package nurbek.onlinereserve.rest.service.impl;
 
 // Abduraximov Nurbek  1/11/2024   4:26 PM
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GlobalVar;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
-import nurbek.onlinereserve.rest.entity.Appointment;
-import nurbek.onlinereserve.rest.entity.Comment;
-import nurbek.onlinereserve.rest.entity.UserProfile;
+import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
-import nurbek.onlinereserve.rest.enums.AppointmentStatus;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.ResAddress;
@@ -27,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +40,7 @@ public class BranchServiceImpl implements BranchService {
     //**=========================== Admin Panel ================================**//
 
     @Override
-    public SuccessMessage registerBranch(ReqRegisterBranch request) throws BranchRequestException {
+    public SuccessMessage registerBranch(ReqRegisterBranch request) throws BranchRequestException, CustomException {
 
         Optional<Branch> optionalBranch = repository.findByName(request.getName());
         if (optionalBranch.isPresent()) {
@@ -108,11 +103,11 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public SuccessMessage updateBranch(ReqUpdateBranch request) {
+    public SuccessMessage updateBranch(ReqUpdateBranch request) throws BranchRequestException {
 
         Optional<Branch> optionalBranch = repository.findById(request.getId());
         if (optionalBranch.isEmpty()) {
-            throw new EntityNotFoundException("Restaurant not found!");
+            throw new BranchRequestException("Restaurant not found!");
         }
         Branch branch = optionalBranch.get();
 
@@ -151,7 +146,7 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public List<ResMyBranch> myBranchList() {
+    public List<ResMyBranch> myBranchList() throws CustomException {
 
         String currentUserUUID = globalVar.getCurrentUserUUID();
 
@@ -224,11 +219,11 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public ResBranch getOneBranch(ReqBranchId request) {
+    public ResBranch getOneBranch(ReqBranchId request) throws BranchRequestException {
 
         Optional<Branch> optionalBranch = repository.findById(request.getId());
         if (optionalBranch.isEmpty()) {
-            throw new EntityNotFoundException("Branch not found!");
+            throw new BranchRequestException("Branch not found!");
         }
         Branch branch = optionalBranch.get();
 
@@ -245,37 +240,42 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public SuccessMessage rateBranch(ReqRate request) throws BranchRequestException {
-
-        UserProfile userProfile = globalVar.getCurrentUser();
-        UUID userUuid = userProfile.getUuid();
-
-        Optional<Branch> optionalBranch = repository.findByUuid(UUID.fromString(request.getBranchUuid()));
-        if (optionalBranch.isEmpty()) {
-            throw new BranchRequestException("Branch not found!");
-        }
-        Branch branch = optionalBranch.get();
-        String branchId = branch.getUuid().toString();
-
-        Optional<Appointment> optionalAppointment =
-                appointmentRepository.findTopByUserIdAndBranchIdAndStatusOrderByCreatedAt(userUuid.toString(), branchId, AppointmentStatus.FINISHED);
-        if (optionalAppointment.isEmpty()) {
-            throw new EntityNotFoundException("Appointment not found!");
-        }
-
-        List<Comment> allComments = commentRepository.findAllByBranchUuidAndGradeNotEmpty(branchId);
-        double commentsCount = allComments.size();
-        double grade = Double.parseDouble(branch.getGrade());
-
-        double updateGrade = ((commentsCount * grade + request.getRate()) / (commentsCount + 1));
-        branch.setGrade(Double.toString(updateGrade));
-        repository.save(branch);
-
-        Comment marking = new Comment();
-        marking.setUserUuid(userUuid.toString());
-        marking.setBranchUuid(branchId);
-        marking.setCommenter(userProfile.getFirstName() + " " + userProfile.getLastName());
-
         return null;
     }
+
+//    @Override
+//    public SuccessMessage rateBranch(ReqRate request) throws BranchRequestException {
+//
+//        UserProfile userProfile = globalVar.getCurrentUser();
+//        UUID userUuid = userProfile.getUuid();
+//
+//        Optional<Branch> optionalBranch = repository.findByUuid(UUID.fromString(request.getBranchUuid()));
+//        if (optionalBranch.isEmpty()) {
+//            throw new BranchRequestException("Branch not found!");
+//        }
+//        Branch branch = optionalBranch.get();
+//        String branchId = branch.getUuid().toString();
+//
+//        Optional<Appointment> optionalAppointment =
+//                appointmentRepository.findTopByUserIdAndBranchIdAndStatusOrderByCreatedAt(userUuid.toString(), branchId, AppointmentStatus.FINISHED);
+//        if (optionalAppointment.isEmpty()) {
+//            throw new EntityNotFoundException("Appointment not found!");
+//        }
+//
+//        List<Comment> allComments = commentRepository.findAllByBranchUuidAndGradeNotEmpty(branchId);
+//        double commentsCount = allComments.size();
+//        double grade = Double.parseDouble(branch.getGrade());
+//
+//        double updateGrade = ((commentsCount * grade + request.getRate()) / (commentsCount + 1));
+//        branch.setGrade(Double.toString(updateGrade));
+//        repository.save(branch);
+//
+//        Comment marking = new Comment();
+//        marking.setUserUuid(userUuid.toString());
+//        marking.setBranchUuid(branchId);
+//        marking.setCommenter(userProfile.getFirstName() + " " + userProfile.getLastName());
+//
+//        return null;
+//    }
 
 }
