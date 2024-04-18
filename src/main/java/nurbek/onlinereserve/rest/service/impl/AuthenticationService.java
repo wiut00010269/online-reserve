@@ -2,8 +2,8 @@ package nurbek.onlinereserve.rest.service.impl;
 
 // Abduraximov Nurbek  4/11/2024   11:33 AM
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.config.security.JwtUtils;
 import nurbek.onlinereserve.rest.entity.UserProfile;
@@ -57,14 +57,14 @@ public class AuthenticationService {
         return token;
     }
 
-    public ResAuthentication authenticate(ReqAuthentication request) {
+    public ResAuthentication authenticate(ReqAuthentication request) throws BranchRequestException {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         Optional<UserProfile> optionalUser = userProfileRepo.findByEmail(request.getEmail());
         if (optionalUser.isEmpty()) {
-            throw new EntityNotFoundException("User does not exist!");
+            throw new BranchRequestException("User does not exist!");
         }
         UserProfile userProfile = optionalUser.get();
 

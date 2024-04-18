@@ -5,10 +5,10 @@ package nurbek.onlinereserve.rest.endpoint.controller;
 import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.config.core.GenericResponse;
+import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.auth.ReqAuthentication;
 import nurbek.onlinereserve.rest.payload.req.auth.ReqRegisterUser;
-import nurbek.onlinereserve.rest.payload.res.auth.ResAuthentication;
 import nurbek.onlinereserve.rest.service.impl.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +24,12 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping(BaseURI.AUTHENTICATE)
-    public ResponseEntity<ResAuthentication> authenticate (
-            @RequestBody ReqAuthentication request
-    ) {
-        return ResponseEntity.ok(service.authenticate(request));
+    public ResponseEntity<?> authenticate (@RequestBody ReqAuthentication request) {
+        try {
+            return ResponseEntity.ok(service.authenticate(request));
+        } catch (BranchRequestException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping(BaseURI.REGISTER)

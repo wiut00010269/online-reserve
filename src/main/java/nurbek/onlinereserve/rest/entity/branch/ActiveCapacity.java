@@ -2,11 +2,12 @@ package nurbek.onlinereserve.rest.entity.branch;
 
 // Abduraximov Nurbek 20/03/2024   12:00
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter

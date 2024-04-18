@@ -2,7 +2,6 @@ package nurbek.onlinereserve.rest.entity;
 
 // Abduraximov Nurbek  1/8/2024   10:39 AM
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +10,7 @@ import nurbek.onlinereserve.base.BaseEntityLong;
 import nurbek.onlinereserve.rest.enums.AppointmentStatus;
 import nurbek.onlinereserve.rest.enums.TableType;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

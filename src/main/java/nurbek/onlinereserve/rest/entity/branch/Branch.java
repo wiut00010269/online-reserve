@@ -2,7 +2,6 @@ package nurbek.onlinereserve.rest.entity.branch;
 
 // Abduraximov Nurbek  1/6/2024   4:51 PM
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,7 @@ import lombok.Setter;
 import nurbek.onlinereserve.base.BaseEntityLong;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
 
+import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.UUID;
 

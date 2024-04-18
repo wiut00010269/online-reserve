@@ -2,8 +2,8 @@ package nurbek.onlinereserve.config.core;
 
 // Abduraximov Nurbek  1/9/2024   11:54 AM
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.repo.UserProfileRepo;
 import org.springframework.security.core.Authentication;
@@ -33,26 +33,26 @@ public class GlobalVar {
         return authentication.getName();
     }
 
-    public String getCurrentUserUUID() {
+    public String getCurrentUserUUID() throws CustomException {
 
         String currentUsername = getCurrentUsername();
 
         Optional<UserProfile> optionalUser = userProfileRepo.findByEmail(currentUsername);
         if (optionalUser.isEmpty()) {
-            throw new EntityNotFoundException("User not found!");
+            throw new CustomException("User not found!");
         }
         UserProfile userProfile = optionalUser.get();
 
         return userProfile.getUuid().toString();
     }
 
-    public UserProfile getCurrentUser() {
+    public UserProfile getCurrentUser() throws CustomException {
 
         String currentUsername = getCurrentUsername();
 
         Optional<UserProfile> optionalUser = userProfileRepo.findByEmail(currentUsername);
         if (optionalUser.isEmpty()) {
-            throw new EntityNotFoundException("User not found!");
+            throw new CustomException("User not found!");
         }
 
         return optionalUser.get();
