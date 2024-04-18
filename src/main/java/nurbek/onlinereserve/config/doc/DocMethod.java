@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 @Operation
 @ApiResponse
-public @interface DocMethodAuth {
+public @interface DocMethod {
     String summary() default "";
     String description() default "";
     String responseCode() default "default";
