@@ -3,6 +3,8 @@ package nurbek.onlinereserve.config.security;
 // Abduraximov Nurbek 02/04/2024   12:10
 
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.handle.AccessHandler;
+import nurbek.onlinereserve.config.handle.AuthHandler;
 import nurbek.onlinereserve.rest.service.impl.UserProfileServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,9 +15,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -59,6 +59,10 @@ public class SecurityConfig {
                         "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated()
+                    .and()
+                    .exceptionHandling()
+                    .accessDeniedHandler(new AccessHandler())
+                    .authenticationEntryPoint(new AuthHandler())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -83,21 +87,12 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-                return userProfileService.loadUserByUsername(email);
-            }
-        };
+        return userProfileService;
     }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    private final String[] permitUrls = new String[]{
-
-    };
 
 }

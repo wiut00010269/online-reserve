@@ -2,7 +2,7 @@ spring:
   application:
     name: online-reserve
   datasource:
-    url: jdbc:postgresql://localhost:5432/online-reserve
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
 #    password: 1401
     password: root123
