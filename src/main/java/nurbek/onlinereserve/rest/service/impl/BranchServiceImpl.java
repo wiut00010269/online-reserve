@@ -11,6 +11,7 @@ import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
+import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.ResAddress;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
@@ -241,6 +242,31 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public SuccessMessage rateBranch(ReqRate request) throws BranchRequestException {
         return null;
+    }
+
+    @Override
+    public List<ResBranch> getNewestRestaurants(ReqCount request) throws BranchRequestException {
+
+        if (request.getCount() <= 0) {
+            throw new BranchRequestException("Invalid count!");
+        }
+
+        List<ResBranch> resultList = new ArrayList<>();
+        List<Branch> latestBranches = repository.findLatestBranches(request.getCount());
+        for (Branch latestBranch : latestBranches) {
+
+            ResBranch resBranch = new ResBranch();
+            resBranch.setBranchUuid(latestBranch.getUuid().toString());
+            resBranch.setName(latestBranch.getName());
+            resBranch.setDescription(latestBranch.getDescription());
+            resBranch.setOpenAt(latestBranch.getOpenAt());
+            resBranch.setCloseAt(latestBranch.getCloseAt());
+            resBranch.setGrade(latestBranch.getGrade());
+            resBranch.setAddress(latestBranch.getAddress());
+            resultList.add(resBranch);
+        }
+
+        return resultList;
     }
 
 //    @Override

@@ -5,6 +5,8 @@ package nurbek.onlinereserve.rest.repo;
 import nurbek.onlinereserve.base.BaseRepositoryLong;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,5 +23,9 @@ public interface BranchRepository extends BaseRepositoryLong<Branch> {
     Optional<Branch> findByUuid(UUID uuid);
 
     List<Branch> findAllByManager1Id(String manager1Id);
+
+    @Query(value = "SELECT * FROM branch ORDER BY created_at DESC LIMIT :count",
+            nativeQuery = true)
+    List<Branch> findLatestBranches(@Param("count") int count);
 
 }

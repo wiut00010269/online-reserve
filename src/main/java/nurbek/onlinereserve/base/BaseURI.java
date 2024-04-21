@@ -19,6 +19,7 @@ public interface BaseURI {
     String APPOINTMENT = "/appointment";
     String BRANCH = "/branch";
     String COMMENT = "/comment";
+    String NEWEST = "/newest";
 
     String LIST = "/list";
 
