@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
+import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -62,6 +63,7 @@ public class BranchController implements BranchEndpoint {
 
     ///*------------------------------- User Side -------------------------------------*///////
 
+    // TODO: 4/21/2024 search, sort {by: MOST | LEAST | TOP RATED | LOW RATED }, filter {by: REGION}  and pagination
     @Override
     public ResponseEntity<?> getBranchList() {
         List<ResBranch> branchList = service.getAllBranches();
@@ -78,6 +80,16 @@ public class BranchController implements BranchEndpoint {
     public ResponseEntity<?> rateBranch(ReqRate request) throws BranchRequestException {
         SuccessMessage msg = service.rateBranch(request);
         return GenericResponse.success(200, "Success", msg);
+    }
+
+    @Override
+    public ResponseEntity<?> getNewRestaurants(ReqCount request) throws BranchRequestException {
+        try {
+            List<ResBranch> resultList = service.getNewestRestaurants(request);
+            return GenericResponse.success(200, "Success", resultList);
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
     }
 
 }

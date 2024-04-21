@@ -1,0 +1,13 @@
+*GET new restaurants {count: n}  ✅
+
+*GET top booked restaurants {count: n}
+
+* email integration with booking
+
+* image save
+
+* comment
+
+* grade
+
+

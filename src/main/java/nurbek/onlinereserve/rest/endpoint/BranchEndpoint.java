@@ -5,6 +5,7 @@ package nurbek.onlinereserve.rest.endpoint;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
+import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -41,5 +42,8 @@ public interface BranchEndpoint {
 
     @PostMapping(BaseURI.RATE)
     ResponseEntity<?> rateBranch(@RequestBody ReqRate request) throws BranchRequestException;
+
+    @PostMapping(BaseURI.GET + BaseURI.NEWEST)
+    ResponseEntity<?> getNewRestaurants(@RequestBody ReqCount request) throws BranchRequestException;
 
 }

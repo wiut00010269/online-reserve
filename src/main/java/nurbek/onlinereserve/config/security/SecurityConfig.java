@@ -28,35 +28,20 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserProfileServiceImpl userProfileService;
     private static final String[] AUTH_WHITELIST = {
+            "/**/auth/**",
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/v2/api-docs",
+            "/v3/api-docs",
             "/webjars/**"
     };
-
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests((authz) -> authz
-//                        .anyRequest().authenticated()
-//                        .and().addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                )
-//                .httpBasic(withDefaults());
-//        return http.build();
-//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/**/auth/**",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html",
-                        "/v2/api-docs",
-                        "/v3/api-docs",
-                        "/webjars/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
                 .authenticated()
                     .and()
