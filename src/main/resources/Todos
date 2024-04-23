@@ -1,6 +1,6 @@
 *GET new restaurants {count: n}  ✅
 
-*GET top booked restaurants {count: n}
+*GET top booked restaurants {count: n} ✅
 
 * email integration with booking
 
@@ -9,5 +9,11 @@
 * comment ✅
 
 * grade ✅
+
+* regex for password
+
+* cron/schedule for booking
+
+* top up balance
 
 

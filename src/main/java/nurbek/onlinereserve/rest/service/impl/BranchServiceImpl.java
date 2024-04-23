@@ -200,23 +200,7 @@ public class BranchServiceImpl implements BranchService {
     public List<ResBranch> getAllBranches() {
         List<Branch> all = repository.findAllByStatus(BranchStatus.ACTIVE);
 
-        List<ResBranch> resultList = new ArrayList<>();
-
-        for (Branch branch : all) {
-
-            ResBranch resBranch = new ResBranch();
-            resBranch.setBranchUuid(branch.getUuid().toString());
-            resBranch.setName(branch.getName());
-            resBranch.setDescription(branch.getDescription());
-            resBranch.setOpenAt(branch.getOpenAt());
-            resBranch.setCloseAt(branch.getCloseAt());
-            resBranch.setGrade(branch.getGrade());
-            resBranch.setAddress(branch.getAddress());
-
-            resultList.add(resBranch);
-        }
-
-        return resultList;
+        return getResBranches(all);
     }
 
     @Override
@@ -266,9 +250,26 @@ public class BranchServiceImpl implements BranchService {
             throw new BranchRequestException("Invalid count!");
         }
 
-        List<ResBranch> resultList = new ArrayList<>();
         List<Branch> latestBranches = repository.findLatestBranches(request.getCount());
-        for (Branch latestBranch : latestBranches) {
+
+        return getResBranches(latestBranches);
+    }
+
+    @Override
+    public List<ResBranch> getTopBookedRestaurants(ReqCount request) throws BranchRequestException {
+
+        if (request.getCount() <= 0) {
+            throw new BranchRequestException("Invalid count!");
+        }
+
+        List<Branch> topAppointedBranches = repository.findTopAppointedBranches(request.getCount());
+
+        return getResBranches(topAppointedBranches);
+    }
+
+    private List<ResBranch> getResBranches(List<Branch> topAppointedBranches) {
+        List<ResBranch> resultList = new ArrayList<>();
+        for (Branch latestBranch : topAppointedBranches) {
 
             ResBranch resBranch = new ResBranch();
             resBranch.setBranchUuid(latestBranch.getUuid().toString());

@@ -22,6 +22,8 @@ public interface BaseURI {
     String NEWEST = "/newest";
 
     String LIST = "/list";
+    String TOP = "/top";
+    String ONE = "/one";
 
     String REGISTER = "/register";
     String GET = "/get";
@@ -29,5 +31,6 @@ public interface BaseURI {
     String WRITE = "/write";
     String UPDATE = "/update";
     String RATE = "/rate";
+    String BOOKED = "/booked";
 
 }

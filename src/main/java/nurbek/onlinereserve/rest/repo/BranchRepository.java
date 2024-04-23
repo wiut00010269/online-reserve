@@ -28,4 +28,13 @@ public interface BranchRepository extends BaseRepositoryLong<Branch> {
             nativeQuery = true)
     List<Branch> findLatestBranches(@Param("count") int count);
 
+    @Query(value = "SELECT b.* " +
+            "FROM branch b " +
+            "JOIN appointment a ON b.uuid = a.branch_id " +
+            "WHERE a.status = 'FINISHED' " +
+            "GROUP BY b.id " +
+            "ORDER BY COUNT(a.id) DESC " +
+            "LIMIT :count", nativeQuery = true)
+    List<Branch> findTopAppointedBranches(@Param("count") int count);
+
 }

@@ -92,4 +92,14 @@ public class BranchController implements BranchEndpoint {
         }
     }
 
+    @Override
+    public ResponseEntity<?> getTopBookedRestaurants(ReqCount request) throws BranchRequestException {
+        try {
+            List<ResBranch> resultList = service.getTopBookedRestaurants(request);
+            return GenericResponse.success(200, "Success", resultList);
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
 }

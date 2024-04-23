@@ -36,4 +36,6 @@ public interface BranchService {
     SuccessMessage rateBranch(ReqRate request) throws BranchRequestException;
 
     List<ResBranch> getNewestRestaurants(ReqCount request) throws BranchRequestException;
+
+    List<ResBranch> getTopBookedRestaurants(ReqCount request) throws BranchRequestException;
 }

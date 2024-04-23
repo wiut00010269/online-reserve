@@ -27,6 +27,7 @@ public interface BranchEndpoint {
     @PostMapping(BaseURI.UPDATE)
     ResponseEntity<?> updateBranch(@RequestBody ReqUpdateBranch request);
 
+    // TODO: 4/23/2024 change API way
     @GetMapping(BaseURI.MY + BaseURI.BRANCH + BaseURI.LIST)
     ResponseEntity<?> myBranches();
 
@@ -37,7 +38,7 @@ public interface BranchEndpoint {
     @GetMapping(BaseURI.LIST)
     ResponseEntity<?> getBranchList();
 
-    @PostMapping(BaseURI.GET)
+    @PostMapping(BaseURI.GET + BaseURI.ONE)
     ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request) throws BranchRequestException;
 
     @PostMapping(BaseURI.RATE)
@@ -45,5 +46,8 @@ public interface BranchEndpoint {
 
     @PostMapping(BaseURI.GET + BaseURI.NEWEST)
     ResponseEntity<?> getNewRestaurants(@RequestBody ReqCount request) throws BranchRequestException;
+
+    @PostMapping(BaseURI.GET + BaseURI.TOP + BaseURI.BOOKED + BaseURI.LIST)
+    ResponseEntity<?> getTopBookedRestaurants(@RequestBody ReqCount request) throws BranchRequestException;
 
 }
