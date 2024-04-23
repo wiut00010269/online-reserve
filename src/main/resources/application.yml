@@ -1,26 +1,8 @@
+server:
+  port: ${APP_PORT:80}
+
 spring:
   application:
-    name: online-reserve
-  datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-#    password: 1401
-    password: root123
-    driverClassName: org.postgresql.Driver
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-    open-in-view: false
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  jackson:
-    time-zone: Asia/Tashkent
-
-springdoc:
-  api-docs:
-    path: /api-docs
+    name: ${APP_NAME:online-reserve}
+  profiles:
+    active: ${APP_PROFILE:dev}
