@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +34,7 @@ public class BranchServiceImpl implements BranchService {
     private final BranchAddressRepository addressRepository;
     private final BranchOriginalCapacityRepo capacityRepo;
     private final ActiveCapacityRepo activeCapacityRepo;
-    private final AppointmentRepository appointmentRepository;
-    private final CommentRepository commentRepository;
+    private final BranchRateRepository rateRepository;
 
     private final GlobalVar globalVar;
 
@@ -241,7 +241,22 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public SuccessMessage rateBranch(ReqRate request) throws BranchRequestException {
-        return null;
+
+        Optional<Branch> optionalBranch = repository.findByUuid(UUID.fromString(request.getBranchUuid()));
+        if (optionalBranch.isEmpty()) {
+            throw new BranchRequestException("Branch not found!");
+        }
+        Branch branch = optionalBranch.get();
+
+        double grade = Double.parseDouble(branch.getGrade());
+        Integer count = rateRepository.getCount(branch.getUuid().toString());
+
+        double rate = (grade * count + request.getRate()) / (count + 1);
+
+        branch.setGrade(String.valueOf(rate));
+        repository.save(branch);
+
+        return new SuccessMessage("Thank you!");
     }
 
     @Override
@@ -268,40 +283,5 @@ public class BranchServiceImpl implements BranchService {
 
         return resultList;
     }
-
-//    @Override
-//    public SuccessMessage rateBranch(ReqRate request) throws BranchRequestException {
-//
-//        UserProfile userProfile = globalVar.getCurrentUser();
-//        UUID userUuid = userProfile.getUuid();
-//
-//        Optional<Branch> optionalBranch = repository.findByUuid(UUID.fromString(request.getBranchUuid()));
-//        if (optionalBranch.isEmpty()) {
-//            throw new BranchRequestException("Branch not found!");
-//        }
-//        Branch branch = optionalBranch.get();
-//        String branchId = branch.getUuid().toString();
-//
-//        Optional<Appointment> optionalAppointment =
-//                appointmentRepository.findTopByUserIdAndBranchIdAndStatusOrderByCreatedAt(userUuid.toString(), branchId, AppointmentStatus.FINISHED);
-//        if (optionalAppointment.isEmpty()) {
-//            throw new EntityNotFoundException("Appointment not found!");
-//        }
-//
-//        List<Comment> allComments = commentRepository.findAllByBranchUuidAndGradeNotEmpty(branchId);
-//        double commentsCount = allComments.size();
-//        double grade = Double.parseDouble(branch.getGrade());
-//
-//        double updateGrade = ((commentsCount * grade + request.getRate()) / (commentsCount + 1));
-//        branch.setGrade(Double.toString(updateGrade));
-//        repository.save(branch);
-//
-//        Comment marking = new Comment();
-//        marking.setUserUuid(userUuid.toString());
-//        marking.setBranchUuid(branchId);
-//        marking.setCommenter(userProfile.getFirstName() + " " + userProfile.getLastName());
-//
-//        return null;
-//    }
 
 }
