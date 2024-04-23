@@ -1,7 +1,6 @@
-package nurbek.onlinereserve.rest.entity;
+package nurbek.onlinereserve.rest.entity.branch;
 
-// Abduraximov Nurbek  3/24/2024   5:28 PM
-
+// Abduraximov Nurbek 23/04/2024   17:22
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,15 +16,13 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comments")
-public class Comment extends BaseEntityLong {
+@Table(name = "branch_rate")
+public class BranchRate extends BaseEntityLong {
 
     private String userUuid;
 
     private String branchUuid;
 
-    private String commenter;
-
-    private String comment;
+    private Double grade;
 
 }
