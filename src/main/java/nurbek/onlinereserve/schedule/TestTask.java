@@ -17,7 +17,7 @@ public class TestTask {
 
     private final BranchRepository branchRepository;
 
-    @Scheduled(cron = "0 39 15 * * ?")
+    @Scheduled(cron = "0 */10 * * * *")
     public void changeBranchInfo() {
 
         System.out.println("Eyy nima gap!");
