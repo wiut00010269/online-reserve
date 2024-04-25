@@ -21,6 +21,12 @@ spring:
   jackson:
     time-zone: Asia/Tashkent
 
+telegram:
+  bots:
+    booking:
+      username: ${BOOKING_BOT_USERNAME:dinetime_monitoring_bot}
+      token: ${BOOKING_BOT_TOKEN:6897439094:AAFVfOkYBAiNg-nPN6EPd3Q77VSMq8bbBzs}
+
 springdoc:
   api-docs:
     path: /api-docs

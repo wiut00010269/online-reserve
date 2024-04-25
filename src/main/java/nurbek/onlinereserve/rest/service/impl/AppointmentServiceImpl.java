@@ -11,6 +11,7 @@ import nurbek.onlinereserve.rest.entity.Appointment;
 import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
+import nurbek.onlinereserve.rest.external.BookingNotifyBot;
 import nurbek.onlinereserve.rest.external.EmailService;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
@@ -42,6 +43,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepo;
 
     private final EmailService emailService;
+    private final BookingNotifyBot bookingBot;
 
     private final GlobalVar globalVar;
 
@@ -115,6 +117,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepo.save(appointment);
 
         emailService.sendEmail("wiut00010269@gmail.com", "Appointment", "You have booked a seat!");
+        bookingBot.sendDepositMessage("You have booked a seat!");
 
         return new SuccessMessage("Successfully booked!");
     }

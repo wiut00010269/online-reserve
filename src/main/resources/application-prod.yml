@@ -4,7 +4,6 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    #    password: 1401
     password: root123
     driverClassName: org.postgresql.Driver
   jpa:
@@ -18,8 +17,14 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-  jackson:
-    time-zone: Asia/Tashkent
+#  jackson:
+#    time-zone: Asia/Tashkent
+
+telegram:
+  bots:
+    booking:
+      username: ${BOOKING_BOT_USERNAME:dinetime_monitoring_bot}
+      token: ${BOOKING_BOT_TOKEN:6897439094:AAFVfOkYBAiNg-nPN6EPd3Q77VSMq8bbBzs}
 
 springdoc:
   api-docs:
