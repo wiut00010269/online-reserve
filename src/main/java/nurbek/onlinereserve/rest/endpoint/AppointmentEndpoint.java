@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(BaseURI.API_V1_PATH + BaseURI.APPOINTMENT)
 public interface AppointmentEndpoint {
 
-    // User Side
+    //***************************************** User Side ***************************************************//
 
     @PostMapping()
     ResponseEntity<?> makeAppointment(@RequestBody ReqAppointment reqAppointment) throws BranchRequestException;
@@ -22,5 +22,12 @@ public interface AppointmentEndpoint {
 
     @PostMapping(BaseURI.CANCEL)
     ResponseEntity<?> cancelAppointment(@RequestBody ReqUUID reqUUID) throws BranchRequestException;
+
+
+    //************************************ Admin Panel ****************************************************//
+
+    @PostMapping(BaseURI.FINISH)
+    ResponseEntity<?> finishAppointment(@RequestBody ReqUUID reqUUID) throws BranchRequestException;
+
 
 }

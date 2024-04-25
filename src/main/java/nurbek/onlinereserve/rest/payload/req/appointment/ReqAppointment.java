@@ -20,7 +20,7 @@ public class ReqAppointment implements Serializable {
 
     private TableType tableType;
 
-    private LocalDateTime startTime;
-    private Duration duration;
+    private String startTime;
+    private String endTime;
 
 }
