@@ -32,5 +32,6 @@ public interface BaseURI {
     String UPDATE = "/update";
     String RATE = "/rate";
     String BOOKED = "/booked";
+    String FINISH = "/finish";
 
 }

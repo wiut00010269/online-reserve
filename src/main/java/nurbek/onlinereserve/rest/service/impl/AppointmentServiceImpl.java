@@ -3,13 +3,19 @@ package nurbek.onlinereserve.rest.service.impl;
 // Abduraximov Nurbek  1/9/2024   11:49 AM
 
 import lombok.RequiredArgsConstructor;
+import nurbek.onlinereserve.config.core.GlobalVar;
 import nurbek.onlinereserve.config.exception.AppointmentRequestException;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
+import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.entity.Appointment;
+import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
+import nurbek.onlinereserve.rest.external.BookingNotifyBot;
+import nurbek.onlinereserve.rest.external.EmailService;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
+import nurbek.onlinereserve.rest.payload.res.ResFormattedTime;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.ActiveCapacityRepo;
 import nurbek.onlinereserve.rest.repo.AppointmentRepository;
@@ -17,6 +23,11 @@ import nurbek.onlinereserve.rest.repo.BranchRepository;
 import nurbek.onlinereserve.rest.service.AppointmentService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,14 +42,21 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final ActiveCapacityRepo activeCapacityRepo;
     private final AppointmentRepository appointmentRepo;
 
+    private final EmailService emailService;
+    private final BookingNotifyBot bookingBot;
+
+    private final GlobalVar globalVar;
+
     @Override
-    public SuccessMessage makeAppointment(ReqAppointment request) throws BranchRequestException {
+    public SuccessMessage makeAppointment(ReqAppointment request) throws BranchRequestException, CustomException {
 
         Optional<Branch> optionalBranch = branchRepository.findByUuid(UUID.fromString(request.getBranchUuid()));
         if (optionalBranch.isEmpty()) {
             throw new BranchRequestException("Branch not found!");
         }
         Branch branch = optionalBranch.get();
+
+        UserProfile currentUser = globalVar.getCurrentUser();
 
         ActiveCapacity activeCapacity = branch.getActiveCapacity();
         switch (request.getTableType()) {
@@ -86,17 +104,48 @@ public class AppointmentServiceImpl implements AppointmentService {
                 break;
         }
 
+        ResFormattedTime resFormattedTime = this.formatTime(request.getStartTime(), request.getEndTime());
+
         Appointment appointment = new Appointment();
-        appointment.setUserId(null);  // TODO: 3/23/2024 user set from security
+        appointment.setUserId(currentUser.getUuid().toString());
         appointment.setBranchId(branch.getUuid().toString());
         appointment.setStatus(BOOKED);
-        appointment.setStartAt(request.getStartTime());
-        appointment.setEndAt(request.getStartTime().plus(request.getDuration()));
+        appointment.setStartAt(resFormattedTime.getStartTime());
+        appointment.setEndAt(resFormattedTime.getEndTime());
         appointment.setDepositPrice(0L);  // TODO: 3/23/2024 should be available soon
         appointment.setTableType(request.getTableType());
         appointmentRepo.save(appointment);
 
+        emailService.sendEmail("wiut00010269@gmail.com", "Appointment", "You have booked a seat!");
+        bookingBot.sendDepositMessage("You have booked a seat!");
+
         return new SuccessMessage("Successfully booked!");
+    }
+
+    private ResFormattedTime formatTime(String startTime, String endTime) {
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime utcTimeCreate = LocalDateTime.parse(startTime, inputFormatter);
+        LocalDateTime utcTimeExpire = LocalDateTime.parse(endTime, inputFormatter);
+
+        // Convert UTC time to Tashkent time zone
+        ZoneId tashkentZone = ZoneId.of("Asia/Tashkent");
+        ZonedDateTime createTime = utcTimeCreate.atZone(ZoneOffset.UTC).withZoneSameInstant(tashkentZone);
+        ZonedDateTime expireTime = utcTimeExpire.atZone(ZoneOffset.UTC).withZoneSameInstant(tashkentZone);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedCreate = createTime.format(formatter);
+        String formattedExpire = expireTime.format(formatter);
+
+        // Convert formatted strings back to LocalDateTime
+        LocalDateTime localFormattedCreate = LocalDateTime.parse(formattedCreate, formatter);
+        LocalDateTime localFormattedExpire = LocalDateTime.parse(formattedExpire, formatter);
+
+        ResFormattedTime formattedTime = new ResFormattedTime();
+        formattedTime.setStartTime(localFormattedCreate);
+        formattedTime.setEndTime(localFormattedExpire);
+        return formattedTime;
     }
 
     @Override
@@ -114,6 +163,13 @@ public class AppointmentServiceImpl implements AppointmentService {
             return new SuccessMessage("Appointment successfully canceled!");
         }
         return new SuccessMessage("Appointment already finished or canceled!");
+    }
+
+    @Override
+    public SuccessMessage finishAppointment(ReqUUID reqUUID) {
+
+
+        return null;
     }
 
 }

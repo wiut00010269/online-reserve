@@ -7,6 +7,7 @@ import nurbek.onlinereserve.rest.enums.AppointmentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,5 +17,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     Optional<Appointment> findByUuid(UUID uuid);
 
     Optional<Appointment> findTopByUserIdAndBranchIdAndStatusOrderByCreatedAt(String userId, String branchId, AppointmentStatus status);
+
+    List<Appointment> findAllByStatus(AppointmentStatus status);
+
+    Optional<Appointment> findByUuidAndStatus(UUID uuid, AppointmentStatus status);
 
 }

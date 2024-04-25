@@ -12,8 +12,10 @@
 
 * regex for password
 
-* cron/schedule for booking
+* cron/schedule for booking ✅
 
 * top up balance
 
+* deposit amount for register restaurant
 
+* search restaurants (predicate)

@@ -21,6 +21,8 @@ public class AppointmentController implements AppointmentEndpoint {
 
     private final AppointmentService service;
 
+    //***************************************** User Side ***************************************************//
+
     @Override
     public ResponseEntity<?> makeAppointment(ReqAppointment request) {
         try {
@@ -40,6 +42,19 @@ public class AppointmentController implements AppointmentEndpoint {
             return GenericResponse.success(200, "Success", result);
         } catch (AppointmentRequestException e) {
             return GenericResponse.error(400, e.getMessage());
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
+
+    //************************************ Admin Panel ****************************************************//
+
+    @Override
+    public ResponseEntity<?> finishAppointment(ReqUUID reqUUID) throws BranchRequestException {
+        try {
+            SuccessMessage result = service.finishAppointment(reqUUID);
+            return GenericResponse.success(200, "Success", result);
         } catch (Throwable th) {
             return GenericResponse.error(401, th.getMessage());
         }
