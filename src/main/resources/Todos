@@ -4,6 +4,8 @@
 
 * email integration with booking
 
+* telegram channel about booking ✅
+
 * image save
 
 * comment ✅
@@ -13,6 +15,7 @@
 * regex for password
 
 * cron/schedule for booking ✅
+    + active capacity
 
 * top up balance
 
