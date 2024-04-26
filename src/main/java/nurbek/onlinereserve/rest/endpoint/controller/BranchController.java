@@ -7,6 +7,7 @@ import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
+import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -55,6 +56,16 @@ public class BranchController implements BranchEndpoint {
         try {
             List<ResMyBranch> myBranchList = service.myBranchList();
             return GenericResponse.success(200, "Success", myBranchList);
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> deleteBranch(ReqId request) {
+        try {
+            SuccessMessage msg = service.deleteMyBranch(request);
+            return GenericResponse.success(200, "Success", msg);
         } catch (Throwable th) {
             return GenericResponse.error(401, th.getMessage());
         }
