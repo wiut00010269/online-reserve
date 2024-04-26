@@ -5,6 +5,7 @@ package nurbek.onlinereserve.rest.service;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
+import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -25,6 +26,8 @@ public interface BranchService {
 
     List<ResMyBranch> myBranchList() throws CustomException;
 
+    SuccessMessage deleteMyBranch(ReqId request) throws BranchRequestException;
+
 
 
     //**=========================== User Side ================================**//
@@ -38,4 +41,5 @@ public interface BranchService {
     List<ResBranch> getNewestRestaurants(ReqCount request) throws BranchRequestException;
 
     List<ResBranch> getTopBookedRestaurants(ReqCount request) throws BranchRequestException;
+
 }

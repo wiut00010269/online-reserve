@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
+import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -30,6 +31,9 @@ public interface BranchEndpoint {
     // TODO: 4/23/2024 change API way
     @GetMapping(BaseURI.MY + BaseURI.BRANCH + BaseURI.LIST)
     ResponseEntity<?> myBranches();
+
+    @PostMapping(BaseURI.DELETE)
+    ResponseEntity<?> deleteBranch(@RequestBody ReqId request);
 
 
     // For User side

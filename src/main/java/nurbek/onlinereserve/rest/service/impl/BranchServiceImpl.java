@@ -12,6 +12,7 @@ import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
+import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.ResAddress;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
@@ -180,6 +181,25 @@ public class BranchServiceImpl implements BranchService {
         }
 
         return resultList;
+    }
+
+    @Override
+    public SuccessMessage deleteMyBranch(ReqId request) throws BranchRequestException {
+
+        Optional<Branch> optionalBranch = repository.findById(request.getId());
+        if (optionalBranch.isEmpty()) {
+            throw new BranchRequestException("Branch not found!");
+        }
+        Branch branch = optionalBranch.get();
+
+        if (BranchStatus.DELETED.equals(branch.getStatus())) {
+            throw new BranchRequestException("Branch already deleted!");
+        }
+
+        branch.setStatus(BranchStatus.DELETED);
+        repository.save(branch);
+
+        return new SuccessMessage("Deleted!");
     }
 
     private boolean validateCapacity(ReqBranchCapacity reqCapacity) {
