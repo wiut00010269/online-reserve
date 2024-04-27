@@ -21,6 +21,7 @@ public interface BaseURI {
     String BRANCH = "/branch";
     String COMMENT = "/comment";
     String NEWEST = "/newest";
+    String FILE = "/file";
 
     String LIST = "/list";
     String TOP = "/top";
@@ -35,5 +36,7 @@ public interface BaseURI {
     String BOOKED = "/booked";
     String FINISH = "/finish";
     String DELETE = "/delete";
+    String ADD = "/add";
+    String UPLOAD = "/upload";
 
 }
