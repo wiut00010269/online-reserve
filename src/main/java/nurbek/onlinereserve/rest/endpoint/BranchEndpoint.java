@@ -12,18 +12,19 @@ import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping(BaseURI.API_V1_PATH + BaseURI.BRANCH)
 public interface BranchEndpoint {
 
     // For Admin Panel
 
-    @PostMapping(BaseURI.REGISTER)
+    @PostMapping(BaseURI.ADD)
     ResponseEntity<?> registerBranch(@RequestBody ReqRegisterBranch request);
+
+    @PostMapping(BaseURI.UPLOAD + BaseURI.FILE)
+    ResponseEntity<?> uploadBranchFile(@RequestParam(value = "file") MultipartFile file);
 
     @PostMapping(BaseURI.UPDATE)
     ResponseEntity<?> updateBranch(@RequestBody ReqUpdateBranch request);

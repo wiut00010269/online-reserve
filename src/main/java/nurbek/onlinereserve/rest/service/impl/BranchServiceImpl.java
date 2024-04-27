@@ -11,6 +11,7 @@ import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.entity.branch.BranchAddress;
 import nurbek.onlinereserve.rest.entity.branch.BranchOriginalCapacity;
 import nurbek.onlinereserve.rest.enums.BranchStatus;
+import nurbek.onlinereserve.rest.external.StorageService;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
@@ -21,6 +22,7 @@ import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.repo.*;
 import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,8 @@ public class BranchServiceImpl implements BranchService {
     private final BranchOriginalCapacityRepo capacityRepo;
     private final ActiveCapacityRepo activeCapacityRepo;
     private final BranchRateRepository rateRepository;
+
+    private final StorageService storageService;
 
     private final GlobalVar globalVar;
 
@@ -273,6 +277,11 @@ public class BranchServiceImpl implements BranchService {
         List<Branch> topAppointedBranches = repository.findTopAppointedBranches(request.getCount());
 
         return getResBranches(topAppointedBranches);
+    }
+
+    @Override
+    public String uploadRestaurantFile(MultipartFile file) {
+        return storageService.uploadFile(file);
     }
 
     private List<ResBranch> getResBranches(List<Branch> topAppointedBranches) {

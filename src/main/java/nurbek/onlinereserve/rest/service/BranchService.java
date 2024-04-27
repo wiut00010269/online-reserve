@@ -13,6 +13,7 @@ import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,5 +42,7 @@ public interface BranchService {
     List<ResBranch> getNewestRestaurants(ReqCount request) throws BranchRequestException;
 
     List<ResBranch> getTopBookedRestaurants(ReqCount request) throws BranchRequestException;
+
+    String uploadRestaurantFile(MultipartFile file);
 
 }

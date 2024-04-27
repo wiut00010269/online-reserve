@@ -18,6 +18,7 @@ import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -36,6 +37,16 @@ public class BranchController implements BranchEndpoint {
             return GenericResponse.success(200, "Success", resBranch);
         } catch (BranchRequestException e) {
             return GenericResponse.error(400, e.getMessage());
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> uploadBranchFile(MultipartFile file) {
+        try {
+            String resBranch = service.uploadRestaurantFile(file);
+            return GenericResponse.success(200, "Success", resBranch);
         } catch (Throwable th) {
             return GenericResponse.error(401, th.getMessage());
         }
