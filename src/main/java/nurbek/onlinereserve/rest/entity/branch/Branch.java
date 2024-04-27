@@ -35,8 +35,6 @@ public class Branch extends BaseEntityLong {
 
     private String manager1Id;
 
-    private String additionalPhone;
-
     @Enumerated(EnumType.STRING)
     private BranchStatus status;
 
@@ -53,5 +51,8 @@ public class Branch extends BaseEntityLong {
     @OneToOne
     @JoinColumn(name = "active_capacity_id")
     private ActiveCapacity activeCapacity;
+
+    @Column(name = "slug", unique = true)
+    private String slug;
 
 }

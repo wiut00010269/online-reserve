@@ -29,6 +29,6 @@ public class BranchAddress extends BaseEntityLong {
 
     private String target;
 
-    private String additionalInfo;
+    private String map;
 
 }

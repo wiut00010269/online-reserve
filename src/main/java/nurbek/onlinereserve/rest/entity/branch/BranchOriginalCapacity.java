@@ -32,8 +32,4 @@ public class BranchOriginalCapacity {
 
     private Integer table20;
 
-    private Integer specialRoom;
-
-    private Integer hall;
-
 }

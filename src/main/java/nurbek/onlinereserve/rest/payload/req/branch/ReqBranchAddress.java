@@ -21,6 +21,6 @@ public class ReqBranchAddress {
 
     private String target;
 
-    private String additionalInfo;
+    private String map;
 
 }
