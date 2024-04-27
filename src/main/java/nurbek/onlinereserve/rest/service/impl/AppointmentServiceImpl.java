@@ -11,7 +11,6 @@ import nurbek.onlinereserve.rest.entity.Appointment;
 import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
-import nurbek.onlinereserve.rest.external.BookingNotifyBot;
 import nurbek.onlinereserve.rest.external.EmailService;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
@@ -31,8 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
-import static nurbek.onlinereserve.rest.enums.AppointmentStatus.BOOKED;
-import static nurbek.onlinereserve.rest.enums.AppointmentStatus.CANCELED;
+import static nurbek.onlinereserve.rest.enums.AppointmentStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepo;
 
     private final EmailService emailService;
-    private final BookingNotifyBot bookingBot;
+//    private final BookingNotifyBot bookingBot;
 
     private final GlobalVar globalVar;
 
@@ -117,7 +115,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointmentRepo.save(appointment);
 
         emailService.sendEmail("wiut00010269@gmail.com", "Appointment", "You have booked a seat!");
-        bookingBot.sendDepositMessage("You have booked a seat!");
+//        bookingBot.sendDepositMessage("You have booked a seat!");
 
         return new SuccessMessage("Successfully booked!");
     }
@@ -162,14 +160,27 @@ public class AppointmentServiceImpl implements AppointmentService {
             appointmentRepo.save(appointment);
             return new SuccessMessage("Appointment successfully canceled!");
         }
+
         return new SuccessMessage("Appointment already finished or canceled!");
     }
 
     @Override
-    public SuccessMessage finishAppointment(ReqUUID reqUUID) {
+    public SuccessMessage finishAppointment(ReqUUID reqUUID) throws AppointmentRequestException {
 
+        Optional<Appointment> optionalAppointment = appointmentRepo.findByUuid(reqUUID.getUuid());
+        if (optionalAppointment.isEmpty()) {
+            throw new AppointmentRequestException("Appointment not found!");
+        }
+        Appointment appointment = optionalAppointment.get();
 
-        return null;
+        if (BOOKED.equals(appointment.getStatus())) {
+            appointment.setStatus(FINISHED);
+            appointmentRepo.save(appointment);
+            return new SuccessMessage("Appointment successfully finished!");
+        }
+
+        return new SuccessMessage("Appointment already finished or canceled!");
     }
+
 
 }

@@ -15,6 +15,7 @@ public interface BaseURI {
     String AUTH = "/auth";
     String AUTHENTICATE = "/authenticate";
     String MY = "/my";
+    String ME = "/me";
 
     String APPOINTMENT = "/appointment";
     String BRANCH = "/branch";

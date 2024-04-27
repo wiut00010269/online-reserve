@@ -15,6 +15,6 @@ public interface AppointmentService {
 
     SuccessMessage cancelAppointment(ReqUUID reqUUID) throws AppointmentRequestException;
 
-    SuccessMessage finishAppointment(ReqUUID reqUUID);
+    SuccessMessage finishAppointment(ReqUUID reqUUID) throws AppointmentRequestException;
 
 }

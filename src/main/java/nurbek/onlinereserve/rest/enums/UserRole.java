@@ -5,7 +5,7 @@ package nurbek.onlinereserve.rest.enums;
 public enum UserRole {
 
     USER,
-    MANAGER,
+    STAFF,
     ADMIN,
     SUPER_ADMIN
 
