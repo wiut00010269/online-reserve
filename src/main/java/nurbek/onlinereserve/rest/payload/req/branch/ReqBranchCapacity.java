@@ -21,8 +21,4 @@ public class ReqBranchCapacity {
 
     private Integer table20;
 
-    private Integer specialRoom;
-
-    private Integer hall;
-
 }

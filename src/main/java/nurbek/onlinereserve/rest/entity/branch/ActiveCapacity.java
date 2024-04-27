@@ -32,8 +32,4 @@ public class ActiveCapacity {
 
     private Integer table20;
 
-    private Integer specialRoom;
-
-    private Integer hall;
-
 }

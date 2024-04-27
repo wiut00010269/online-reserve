@@ -20,13 +20,11 @@ public class ReqRegisterBranch {
 
     private String description;
 
-    private String additionalPhone;
+    private String slug;
 
     private LocalTime openAt;
 
     private LocalTime closeAt;
-
-    private BranchType type;
 
     private ReqBranchAddress address;
 

@@ -12,14 +12,20 @@ import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
 import nurbek.onlinereserve.rest.external.EmailService;
+import nurbek.onlinereserve.rest.payload.req.ReqPaging;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;
+import nurbek.onlinereserve.rest.payload.res.ResAppointment;
 import nurbek.onlinereserve.rest.payload.res.ResFormattedTime;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.ActiveCapacityRepo;
 import nurbek.onlinereserve.rest.repo.AppointmentRepository;
 import nurbek.onlinereserve.rest.repo.BranchRepository;
 import nurbek.onlinereserve.rest.service.AppointmentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,6 +33,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -85,18 +93,6 @@ public class AppointmentServiceImpl implements AppointmentService {
             case TABLE20:
                 if (activeCapacity.getTable20() > 0) {
                     activeCapacity.setTable20(activeCapacity.getTable20() - 1);
-                    activeCapacityRepo.save(activeCapacity);
-                }
-                break;
-            case SPECIAL_ROOM:
-                if (activeCapacity.getSpecialRoom() > 0) {
-                    activeCapacity.setSpecialRoom(activeCapacity.getSpecialRoom() - 1);
-                    activeCapacityRepo.save(activeCapacity);
-                }
-                break;
-            case HALL:
-                if (activeCapacity.getHall() > 0) {
-                    activeCapacity.setHall(activeCapacity.getHall() - 1);
                     activeCapacityRepo.save(activeCapacity);
                 }
                 break;
@@ -180,6 +176,41 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
 
         return new SuccessMessage("Appointment already finished or canceled!");
+    }
+
+    @Override
+    public Page<ResAppointment> getMyBookingList(ReqPaging request) throws CustomException {
+
+        UserProfile currentUser = globalVar.getCurrentUser();
+
+        List<Appointment> appointments = appointmentRepo.findAllByUserId(currentUser.getUuid().toString());
+
+        List<ResAppointment> resultList = new ArrayList<>();
+
+        for (Appointment appointment : appointments) {
+
+            Optional<Branch> optionalBranch = branchRepository.findByUuid(UUID.fromString(appointment.getBranchId()));
+            if (optionalBranch.isEmpty()) {
+                continue;
+            }
+            Branch branch = optionalBranch.get();
+
+            ResAppointment resAppointment = new ResAppointment();
+            resAppointment.setUser(currentUser.getFirstName() + " " + currentUser.getLastName());
+            resAppointment.setStatus(appointment.getStatus());
+            resAppointment.setStartAt(appointment.getStartAt());
+            resAppointment.setTableType(appointment.getTableType());
+            resAppointment.setRestaurantName(branch.getName());
+
+            resultList.add(resAppointment);
+        }
+
+        Pageable pageRequest = PageRequest.of(request.getPage(), request.getSize());
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), resultList.size());
+        List<ResAppointment> pageContent = resultList.subList(start, end);
+
+        return new PageImpl<>(pageContent, pageRequest, resultList.size());
     }
 
 

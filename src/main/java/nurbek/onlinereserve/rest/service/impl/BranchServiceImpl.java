@@ -57,7 +57,7 @@ public class BranchServiceImpl implements BranchService {
         branchAddress.setStreet(request.getAddress().getStreet());
         branchAddress.setHomeNumber(request.getAddress().getHomeNumber());
         branchAddress.setTarget(request.getAddress().getTarget());
-        branchAddress.setAdditionalInfo(request.getAddress().getAdditionalInfo());
+        branchAddress.setMap(request.getAddress().getMap());
         branchAddress = addressRepository.save(branchAddress);
 
         ReqBranchCapacity reqCapacity = request.getCapacity();
@@ -73,8 +73,6 @@ public class BranchServiceImpl implements BranchService {
         branchCapacity.setTable8(reqCapacity.getTable8());
         branchCapacity.setTable12(reqCapacity.getTable12());
         branchCapacity.setTable20(reqCapacity.getTable20());
-        branchCapacity.setSpecialRoom(reqCapacity.getSpecialRoom());
-        branchCapacity.setHall(reqCapacity.getHall());
         branchCapacity = capacityRepo.save(branchCapacity);
 
         ActiveCapacity activeCapacity = new ActiveCapacity();
@@ -83,15 +81,12 @@ public class BranchServiceImpl implements BranchService {
         activeCapacity.setTable8(reqCapacity.getTable8());
         activeCapacity.setTable12(reqCapacity.getTable12());
         activeCapacity.setTable20(reqCapacity.getTable20());
-        activeCapacity.setSpecialRoom(reqCapacity.getSpecialRoom());
-        activeCapacity.setHall(reqCapacity.getHall());
         activeCapacity = activeCapacityRepo.save(activeCapacity);
 
         Branch branch = new Branch();
         branch.setName(request.getName());
         branch.setDescription(request.getDescription());
         branch.setManager1Id(currentUserUUID);
-        branch.setAdditionalPhone(request.getAdditionalPhone());
         branch.setStatus(BranchStatus.INACTIVE);
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());
@@ -120,7 +115,6 @@ public class BranchServiceImpl implements BranchService {
         address.setStreet(reqAddress.getStreet());
         address.setHomeNumber(reqAddress.getHomeNumber());
         address.setTarget(reqAddress.getTarget());
-        address.setAdditionalInfo(reqAddress.getAdditionalInfo());
         address = addressRepository.save(address);
 
         ReqBranchCapacity reqCapacity = request.getCapacity();
@@ -130,13 +124,10 @@ public class BranchServiceImpl implements BranchService {
         capacity.setTable8(reqCapacity.getTable8());
         capacity.setTable12(reqCapacity.getTable12());
         capacity.setTable20(reqCapacity.getTable20());
-        capacity.setSpecialRoom(reqCapacity.getSpecialRoom());
-        capacity.setHall(reqCapacity.getHall());
         capacity = capacityRepo.save(capacity);
 
         branch.setName(request.getName());
         branch.setDescription(request.getDescription());
-        branch.setAdditionalPhone(request.getAdditionalPhone());
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());
         branch.setStatus(request.getStatus());
@@ -165,7 +156,6 @@ public class BranchServiceImpl implements BranchService {
             resAddress.setStreet(address.getStreet());
             resAddress.setHomeNumber(address.getHomeNumber());
             resAddress.setTarget(address.getTarget());
-            resAddress.setAdditionalInfo(address.getAdditionalInfo());
 
             ResMyBranch myBranch = new ResMyBranch();
             myBranch.setId(branch.getId());
@@ -208,9 +198,7 @@ public class BranchServiceImpl implements BranchService {
                 reqCapacity.getTable4() >= 0 &&
                 reqCapacity.getTable8() >= 0 &&
                 reqCapacity.getTable12() >= 0 &&
-                reqCapacity.getTable20() >= 0 &&
-                reqCapacity.getSpecialRoom() >= 0 &&
-                reqCapacity.getHall() >= 0;
+                reqCapacity.getTable20() >= 0;
     }
 
 
