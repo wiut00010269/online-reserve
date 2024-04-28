@@ -14,6 +14,7 @@ import nurbek.onlinereserve.rest.enums.BranchStatus;
 import nurbek.onlinereserve.rest.external.StorageService;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.ResAddress;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
@@ -21,9 +22,18 @@ import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.repo.*;
 import nurbek.onlinereserve.rest.service.BranchService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +51,8 @@ public class BranchServiceImpl implements BranchService {
 
     private final StorageService storageService;
 
+    private final EntityManager entityManager;
+
     private final GlobalVar globalVar;
 
     //**=========================== Admin Panel ================================**//
@@ -57,10 +69,7 @@ public class BranchServiceImpl implements BranchService {
 
         BranchAddress branchAddress = new BranchAddress();
         branchAddress.setRegion(request.getAddress().getRegion());
-        branchAddress.setDistrict(request.getAddress().getDistrict());
         branchAddress.setStreet(request.getAddress().getStreet());
-        branchAddress.setHomeNumber(request.getAddress().getHomeNumber());
-        branchAddress.setTarget(request.getAddress().getTarget());
         branchAddress.setMap(request.getAddress().getMap());
         branchAddress = addressRepository.save(branchAddress);
 
@@ -91,7 +100,7 @@ public class BranchServiceImpl implements BranchService {
         branch.setName(request.getName());
         branch.setDescription(request.getDescription());
         branch.setManager1Id(currentUserUUID);
-        branch.setStatus(BranchStatus.INACTIVE);
+        branch.setStatus(BranchStatus.ACTIVE);
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());
         branch.setImgUrl(request.getImgUrl());
@@ -116,10 +125,8 @@ public class BranchServiceImpl implements BranchService {
         ReqBranchAddress reqAddress = request.getAddress();
         BranchAddress address = branch.getAddress();
         address.setRegion(reqAddress.getRegion());
-        address.setDistrict(reqAddress.getDistrict());
         address.setStreet(reqAddress.getStreet());
-        address.setHomeNumber(reqAddress.getHomeNumber());
-        address.setTarget(reqAddress.getTarget());
+        address.setMap(reqAddress.getMap());
         address = addressRepository.save(address);
 
         ReqBranchCapacity reqCapacity = request.getCapacity();
@@ -157,10 +164,8 @@ public class BranchServiceImpl implements BranchService {
 
             ResAddress resAddress = new ResAddress();
             resAddress.setRegion(address.getRegion());
-            resAddress.setDistrict(address.getDistrict());
             resAddress.setStreet(address.getStreet());
-            resAddress.setHomeNumber(address.getHomeNumber());
-            resAddress.setTarget(address.getTarget());
+            resAddress.setMap(address.getMap());
 
             ResMyBranch myBranch = new ResMyBranch();
             myBranch.setId(branch.getId());
@@ -217,9 +222,9 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public ResBranch getOneBranch(ReqBranchId request) throws BranchRequestException {
+    public ResBranch getOneBranch(ReqUUID request) throws BranchRequestException {
 
-        Optional<Branch> optionalBranch = repository.findById(request.getId());
+        Optional<Branch> optionalBranch = repository.findByUuid(request.getUuid());
         if (optionalBranch.isEmpty()) {
             throw new BranchRequestException("Branch not found!");
         }
@@ -231,7 +236,9 @@ public class BranchServiceImpl implements BranchService {
         resBranch.setOpenAt(branch.getOpenAt());
         resBranch.setCloseAt(branch.getCloseAt());
         resBranch.setGrade(branch.getGrade());
+        resBranch.setImgUrl(branch.getImgUrl());
         resBranch.setAddress(branch.getAddress());
+        resBranch.setCapacity(branch.getActiveCapacity());
 
         return resBranch;
     }
@@ -285,6 +292,36 @@ public class BranchServiceImpl implements BranchService {
         return storageService.uploadFile(file);
     }
 
+    @Override
+    public Page<ResBranch> getBranchesFilter(ReqBranchCriteria criteria) {
+
+        List<ResBranch> resultList = this.getFilteredList(criteria);
+
+        Pageable pageRequest = PageRequest.of(criteria.getPaging().getPage(), criteria.getPaging().getSize());
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), resultList.size());
+        List<ResBranch> pageContent = resultList.subList(start, end);
+
+        return new PageImpl<>(pageContent, pageRequest, resultList.size());
+    }
+
+    private List<ResBranch> getFilteredList(ReqBranchCriteria criteria) {
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Branch> criteriaQuery = criteriaBuilder.createQuery(Branch.class);
+        Root<Branch> root = criteriaQuery.from(Branch.class);
+
+        Predicate namePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + criteria.getName().toLowerCase() + "%");
+        Predicate regionPredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("address").get("region")), "%" + criteria.getRegion().toLowerCase() + "%");
+
+        criteriaQuery.where(namePredicate);
+        criteriaQuery.where(regionPredicate);
+
+        List<Branch> resultList = entityManager.createQuery(criteriaQuery).getResultList();
+
+        return this.getResBranches(resultList);
+    }
+
     private List<ResBranch> getResBranches(List<Branch> topAppointedBranches) {
         List<ResBranch> resultList = new ArrayList<>();
         for (Branch latestBranch : topAppointedBranches) {
@@ -296,7 +333,9 @@ public class BranchServiceImpl implements BranchService {
             resBranch.setOpenAt(latestBranch.getOpenAt());
             resBranch.setCloseAt(latestBranch.getCloseAt());
             resBranch.setGrade(latestBranch.getGrade());
+            resBranch.setImgUrl(latestBranch.getImgUrl());
             resBranch.setAddress(latestBranch.getAddress());
+            resBranch.setCapacity(latestBranch.getActiveCapacity());
             resultList.add(resBranch);
         }
 

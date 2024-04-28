@@ -2,12 +2,12 @@ package nurbek.onlinereserve.rest.endpoint;
 
 // Abduraximov Nurbek  1/11/2024   4:11 PM
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchCriteria;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
@@ -39,12 +39,14 @@ public interface BranchEndpoint {
 
     // For User side
 
-    @Tag(name = "get", description = "GET methods of Employee APIs")
     @GetMapping(BaseURI.LIST)
     ResponseEntity<?> getBranchList();
 
+    @PostMapping(BaseURI.LIST + BaseURI.FILTER)
+    ResponseEntity<?> getBranchListFilter(@RequestBody ReqBranchCriteria criteria);
+
     @PostMapping(BaseURI.GET + BaseURI.ONE)
-    ResponseEntity<?> getBranchOne(@RequestBody ReqBranchId request) throws BranchRequestException;
+    ResponseEntity<?> getBranchOne(@RequestBody ReqUUID request) throws BranchRequestException;
 
     @PostMapping(BaseURI.RATE)
     ResponseEntity<?> rateBranch(@RequestBody ReqRate request) throws BranchRequestException;

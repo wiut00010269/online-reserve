@@ -6,13 +6,12 @@ import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
+import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public interface BranchService {
 
     List<ResBranch> getAllBranches();
 
-    ResBranch getOneBranch(ReqBranchId request) throws BranchRequestException;
+    ResBranch getOneBranch(ReqUUID request) throws BranchRequestException;
 
     SuccessMessage rateBranch(ReqRate request) throws BranchRequestException;
 
@@ -44,5 +43,7 @@ public interface BranchService {
     List<ResBranch> getTopBookedRestaurants(ReqCount request) throws BranchRequestException;
 
     String uploadRestaurantFile(MultipartFile file);
+
+    Page<ResBranch> getBranchesFilter(ReqBranchCriteria criteria);
 
 }
