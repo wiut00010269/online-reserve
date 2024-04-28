@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(BaseURI.USER)
+@RequestMapping(BaseURI.API_V1_PATH + BaseURI.USER)
 public class UserProfileController {
 
     private final UserProfileServiceImpl userProfileService;
