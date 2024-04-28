@@ -22,6 +22,10 @@ public class ResMyBranch implements Serializable {
 
     private String description;
 
+    private String slug;
+
+    private String imgUrl;
+
     private LocalTime openAt;
 
     private LocalTime closeAt;
