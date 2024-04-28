@@ -94,6 +94,7 @@ public class BranchServiceImpl implements BranchService {
         branch.setStatus(BranchStatus.INACTIVE);
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());
+        branch.setImgUrl(request.getImgUrl());
         branch.setAddress(branchAddress);
         branch.setCapacity(branchCapacity);
         branch.setActiveCapacity(activeCapacity);

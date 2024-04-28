@@ -7,7 +7,9 @@ import nurbek.onlinereserve.config.core.GlobalVar;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.enums.UserStatus;
+import nurbek.onlinereserve.rest.payload.req.ReqAddUser;
 import nurbek.onlinereserve.rest.payload.res.ResUserMe;
+import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.repo.UserProfileRepo;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,5 +60,10 @@ public class UserProfileServiceImpl implements UserDetailsService {
         resUser.setRole(currentUser.getRole());
 
         return resUser;
+    }
+
+    public SuccessMessage addStaff(ReqAddUser request) {
+
+        return null;
     }
 }

@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.base.BaseURI;
 import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.config.exception.CustomException;
+import nurbek.onlinereserve.rest.payload.req.ReqAddUser;
 import nurbek.onlinereserve.rest.payload.res.ResUserMe;
+import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.service.impl.UserProfileServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +30,16 @@ public class UserProfileController {
             return GenericResponse.success(200, "Success", resUser);
         } catch (CustomException e) {
             return GenericResponse.error(400, e.getMessage());
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
+    }
+
+    @GetMapping(BaseURI.ADD)
+    public ResponseEntity<?> addStaffs(@RequestBody ReqAddUser request) {
+        try {
+            SuccessMessage msg = userProfileService.addStaff(request);
+            return GenericResponse.success(200, "Success", msg);
         } catch (Throwable th) {
             return GenericResponse.error(401, th.getMessage());
         }
