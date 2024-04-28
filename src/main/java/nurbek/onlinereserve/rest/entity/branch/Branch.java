@@ -55,4 +55,6 @@ public class Branch extends BaseEntityLong {
     @Column(name = "slug", unique = true)
     private String slug;
 
+    private String imgUrl;
+
 }

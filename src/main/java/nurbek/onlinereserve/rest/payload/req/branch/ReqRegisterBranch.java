@@ -26,6 +26,8 @@ public class ReqRegisterBranch {
 
     private LocalTime closeAt;
 
+    private String imgUrl;
+
     private ReqBranchAddress address;
 
     private ReqBranchCapacity capacity;
