@@ -182,7 +182,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         UserProfile currentUser = globalVar.getCurrentUser();
 
-        List<Appointment> appointments = appointmentRepo.findAllByUserId(currentUser.getUuid().toString());
+        List<Appointment> appointments = appointmentRepo.findAllByUserIdOrderByCreatedAtDesc(currentUser.getUuid().toString());
 
         List<ResAppointment> resultList = new ArrayList<>();
 

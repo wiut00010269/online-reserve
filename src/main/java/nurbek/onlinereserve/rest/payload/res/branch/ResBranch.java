@@ -29,6 +29,8 @@ public class ResBranch {
 
     private String imgUrl;
 
+    private String slug;
+
     private BranchAddress address;
 
     private ActiveCapacity capacity;

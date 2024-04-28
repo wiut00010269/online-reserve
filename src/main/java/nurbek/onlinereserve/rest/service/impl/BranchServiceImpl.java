@@ -143,6 +143,8 @@ public class BranchServiceImpl implements BranchService {
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());
         branch.setStatus(request.getStatus());
+        branch.setImgUrl(request.getImgUrl());
+        branch.setSlug(request.getSlug());
         branch.setAddress(address);
         branch.setCapacity(capacity);
         repository.save(branch);
@@ -175,6 +177,8 @@ public class BranchServiceImpl implements BranchService {
             myBranch.setCloseAt(branch.getCloseAt());
             myBranch.setStatus(branch.getStatus());
             myBranch.setGrade(branch.getGrade());
+            myBranch.setImgUrl(branch.getImgUrl());
+            myBranch.setSlug(branch.getSlug());
             myBranch.setAddress(resAddress);
 
             resultList.add(myBranch);
@@ -237,6 +241,7 @@ public class BranchServiceImpl implements BranchService {
         resBranch.setCloseAt(branch.getCloseAt());
         resBranch.setGrade(branch.getGrade());
         resBranch.setImgUrl(branch.getImgUrl());
+        resBranch.setSlug(branch.getSlug());
         resBranch.setAddress(branch.getAddress());
         resBranch.setCapacity(branch.getActiveCapacity());
 
@@ -334,6 +339,7 @@ public class BranchServiceImpl implements BranchService {
             resBranch.setCloseAt(latestBranch.getCloseAt());
             resBranch.setGrade(latestBranch.getGrade());
             resBranch.setImgUrl(latestBranch.getImgUrl());
+            resBranch.setSlug(latestBranch.getSlug());
             resBranch.setAddress(latestBranch.getAddress());
             resBranch.setCapacity(latestBranch.getActiveCapacity());
             resultList.add(resBranch);

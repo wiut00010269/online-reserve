@@ -21,7 +21,9 @@ public class ReqUpdateBranch implements Serializable {
 
     private String description;
 
-    private String additionalPhone;
+    private String slug;
+
+    private String imgUrl;
 
     private LocalTime openAt;
 
