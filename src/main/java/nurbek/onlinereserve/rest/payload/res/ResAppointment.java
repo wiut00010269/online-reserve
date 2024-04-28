@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ResAppointment implements Serializable {
 
+    private String id;
+
     private String user;
 
     private AppointmentStatus status;

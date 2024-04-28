@@ -8,8 +8,6 @@ public enum TableType {
     TABLE4,
     TABLE8,
     TABLE12,
-    TABLE20,
-    SPECIAL_ROOM,
-    HALL
+    TABLE20
 
 }

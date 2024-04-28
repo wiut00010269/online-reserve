@@ -13,6 +13,7 @@ import nurbek.onlinereserve.rest.repo.BranchRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,7 +32,7 @@ public class AppointmentTask {
         List<Appointment> allByStatus = appointmentRepository.findAllByStatus(AppointmentStatus.BOOKED);
 
         for (Appointment appointment : allByStatus) {
-            if (AppointmentStatus.BOOKED.equals(appointment.getStatus())) {
+            if (AppointmentStatus.BOOKED.equals(appointment.getStatus()) && LocalDateTime.now().isAfter(appointment.getEndAt())) {
 
                 Optional<Branch> optionalBranch = branchRepository.findByUuid(UUID.fromString(appointment.getBranchId()));
                 if (optionalBranch.isEmpty()) {

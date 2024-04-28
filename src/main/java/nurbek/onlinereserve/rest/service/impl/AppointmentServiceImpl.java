@@ -195,6 +195,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             Branch branch = optionalBranch.get();
 
             ResAppointment resAppointment = new ResAppointment();
+            resAppointment.setId(appointment.getBranchId());
             resAppointment.setUser(currentUser.getFirstName() + " " + currentUser.getLastName());
             resAppointment.setStatus(appointment.getStatus());
             resAppointment.setStartAt(appointment.getStartAt());
