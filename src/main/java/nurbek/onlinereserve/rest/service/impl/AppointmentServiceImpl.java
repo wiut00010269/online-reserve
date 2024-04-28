@@ -11,7 +11,6 @@ import nurbek.onlinereserve.rest.entity.Appointment;
 import nurbek.onlinereserve.rest.entity.UserProfile;
 import nurbek.onlinereserve.rest.entity.branch.ActiveCapacity;
 import nurbek.onlinereserve.rest.entity.branch.Branch;
-//import nurbek.onlinereserve.rest.external.EmailService;
 import nurbek.onlinereserve.rest.payload.req.ReqPaging;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.appointment.ReqAppointment;

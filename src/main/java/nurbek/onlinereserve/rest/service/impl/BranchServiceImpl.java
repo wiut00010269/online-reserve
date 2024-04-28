@@ -22,6 +22,10 @@ import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.repo.*;
 import nurbek.onlinereserve.rest.service.BranchService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,10 +69,7 @@ public class BranchServiceImpl implements BranchService {
 
         BranchAddress branchAddress = new BranchAddress();
         branchAddress.setRegion(request.getAddress().getRegion());
-        branchAddress.setDistrict(request.getAddress().getDistrict());
         branchAddress.setStreet(request.getAddress().getStreet());
-        branchAddress.setHomeNumber(request.getAddress().getHomeNumber());
-        branchAddress.setTarget(request.getAddress().getTarget());
         branchAddress.setMap(request.getAddress().getMap());
         branchAddress = addressRepository.save(branchAddress);
 
@@ -99,7 +100,7 @@ public class BranchServiceImpl implements BranchService {
         branch.setName(request.getName());
         branch.setDescription(request.getDescription());
         branch.setManager1Id(currentUserUUID);
-        branch.setStatus(BranchStatus.INACTIVE);
+        branch.setStatus(BranchStatus.ACTIVE);
         branch.setOpenAt(request.getOpenAt());
         branch.setCloseAt(request.getCloseAt());
         branch.setImgUrl(request.getImgUrl());
@@ -124,10 +125,8 @@ public class BranchServiceImpl implements BranchService {
         ReqBranchAddress reqAddress = request.getAddress();
         BranchAddress address = branch.getAddress();
         address.setRegion(reqAddress.getRegion());
-        address.setDistrict(reqAddress.getDistrict());
         address.setStreet(reqAddress.getStreet());
-        address.setHomeNumber(reqAddress.getHomeNumber());
-        address.setTarget(reqAddress.getTarget());
+        address.setMap(reqAddress.getMap());
         address = addressRepository.save(address);
 
         ReqBranchCapacity reqCapacity = request.getCapacity();
@@ -165,10 +164,8 @@ public class BranchServiceImpl implements BranchService {
 
             ResAddress resAddress = new ResAddress();
             resAddress.setRegion(address.getRegion());
-            resAddress.setDistrict(address.getDistrict());
             resAddress.setStreet(address.getStreet());
-            resAddress.setHomeNumber(address.getHomeNumber());
-            resAddress.setTarget(address.getTarget());
+            resAddress.setMap(address.getMap());
 
             ResMyBranch myBranch = new ResMyBranch();
             myBranch.setId(branch.getId());
@@ -241,6 +238,7 @@ public class BranchServiceImpl implements BranchService {
         resBranch.setGrade(branch.getGrade());
         resBranch.setImgUrl(branch.getImgUrl());
         resBranch.setAddress(branch.getAddress());
+        resBranch.setCapacity(branch.getActiveCapacity());
 
         return resBranch;
     }
@@ -295,13 +293,16 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public List<ResBranch> getBranchesFilter(ReqBranchCriteria criteria) {
+    public Page<ResBranch> getBranchesFilter(ReqBranchCriteria criteria) {
 
         List<ResBranch> resultList = this.getFilteredList(criteria);
 
+        Pageable pageRequest = PageRequest.of(criteria.getPaging().getPage(), criteria.getPaging().getSize());
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), resultList.size());
+        List<ResBranch> pageContent = resultList.subList(start, end);
 
-
-        return null;
+        return new PageImpl<>(pageContent, pageRequest, resultList.size());
     }
 
     private List<ResBranch> getFilteredList(ReqBranchCriteria criteria) {
@@ -334,6 +335,7 @@ public class BranchServiceImpl implements BranchService {
             resBranch.setGrade(latestBranch.getGrade());
             resBranch.setImgUrl(latestBranch.getImgUrl());
             resBranch.setAddress(latestBranch.getAddress());
+            resBranch.setCapacity(latestBranch.getActiveCapacity());
             resultList.add(resBranch);
         }
 

@@ -14,6 +14,7 @@ import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.service.BranchService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,7 +96,7 @@ public class BranchController implements BranchEndpoint {
     @Override
     public ResponseEntity<?> getBranchListFilter(ReqBranchCriteria criteria) {
         try {
-            List<ResBranch> resultList = service.getBranchesFilter(criteria);
+            Page<ResBranch> resultList = service.getBranchesFilter(criteria);
             return GenericResponse.success(200, "Success", resultList);
         } catch (Throwable th) {
             return GenericResponse.error(401, th.getMessage());

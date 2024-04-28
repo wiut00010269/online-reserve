@@ -11,6 +11,7 @@ import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -43,6 +44,6 @@ public interface BranchService {
 
     String uploadRestaurantFile(MultipartFile file);
 
-    List<ResBranch> getBranchesFilter(ReqBranchCriteria criteria);
+    Page<ResBranch> getBranchesFilter(ReqBranchCriteria criteria);
 
 }
