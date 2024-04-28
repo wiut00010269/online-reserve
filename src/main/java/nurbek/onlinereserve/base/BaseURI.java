@@ -38,5 +38,6 @@ public interface BaseURI {
     String DELETE = "/delete";
     String ADD = "/add";
     String UPLOAD = "/upload";
+    String PING = "/ping";
 
 }

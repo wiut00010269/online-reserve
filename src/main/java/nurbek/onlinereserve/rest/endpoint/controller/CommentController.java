@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import nurbek.onlinereserve.config.core.GenericResponse;
 import nurbek.onlinereserve.rest.endpoint.CommentEndpoint;
 import nurbek.onlinereserve.rest.payload.req.ReqComment;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.service.CommentService;
 import org.springframework.http.ResponseEntity;

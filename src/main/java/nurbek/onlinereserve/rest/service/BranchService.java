@@ -6,6 +6,7 @@ import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -35,7 +36,7 @@ public interface BranchService {
 
     List<ResBranch> getAllBranches();
 
-    ResBranch getOneBranch(ReqBranchId request) throws BranchRequestException;
+    ResBranch getOneBranch(ReqUUID request) throws BranchRequestException;
 
     SuccessMessage rateBranch(ReqRate request) throws BranchRequestException;
 

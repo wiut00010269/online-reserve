@@ -8,6 +8,7 @@ import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
@@ -17,12 +18,14 @@ import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
 import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(maxAge = 3600)
 @RequiredArgsConstructor
 public class BranchController implements BranchEndpoint {
 
@@ -93,7 +96,7 @@ public class BranchController implements BranchEndpoint {
     }
 
     @Override
-    public ResponseEntity<?> getBranchOne(ReqBranchId request) throws BranchRequestException {
+    public ResponseEntity<?> getBranchOne(ReqUUID request) throws BranchRequestException {
         ResBranch oneBranch = service.getOneBranch(request);
         return GenericResponse.success(200, "Success", oneBranch);
     }
@@ -105,7 +108,7 @@ public class BranchController implements BranchEndpoint {
     }
 
     @Override
-    public ResponseEntity<?> getNewRestaurants(ReqCount request) throws BranchRequestException {
+    public ResponseEntity<?> getNewRestaurants(ReqCount request) {
         try {
             List<ResBranch> resultList = service.getNewestRestaurants(request);
             return GenericResponse.success(200, "Success", resultList);
@@ -115,7 +118,7 @@ public class BranchController implements BranchEndpoint {
     }
 
     @Override
-    public ResponseEntity<?> getTopBookedRestaurants(ReqCount request) throws BranchRequestException {
+    public ResponseEntity<?> getTopBookedRestaurants(ReqCount request) {
         try {
             List<ResBranch> resultList = service.getTopBookedRestaurants(request);
             return GenericResponse.success(200, "Success", resultList);

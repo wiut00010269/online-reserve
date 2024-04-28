@@ -14,6 +14,7 @@ import nurbek.onlinereserve.rest.enums.BranchStatus;
 import nurbek.onlinereserve.rest.external.StorageService;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
+import nurbek.onlinereserve.rest.payload.req.ReqUUID;
 import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.ResAddress;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
@@ -217,9 +218,9 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public ResBranch getOneBranch(ReqBranchId request) throws BranchRequestException {
+    public ResBranch getOneBranch(ReqUUID request) throws BranchRequestException {
 
-        Optional<Branch> optionalBranch = repository.findById(request.getId());
+        Optional<Branch> optionalBranch = repository.findByUuid(request.getUuid());
         if (optionalBranch.isEmpty()) {
             throw new BranchRequestException("Branch not found!");
         }
