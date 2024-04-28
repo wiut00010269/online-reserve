@@ -26,6 +26,7 @@ public interface BaseURI {
     String LIST = "/list";
     String TOP = "/top";
     String ONE = "/one";
+    String FILTER = "/filter";
 
     String REGISTER = "/register";
     String GET = "/get";

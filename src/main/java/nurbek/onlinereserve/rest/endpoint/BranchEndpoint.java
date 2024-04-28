@@ -7,7 +7,7 @@ import nurbek.onlinereserve.config.exception.BranchRequestException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
+import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchCriteria;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
 import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
@@ -41,6 +41,9 @@ public interface BranchEndpoint {
 
     @GetMapping(BaseURI.LIST)
     ResponseEntity<?> getBranchList();
+
+    @PostMapping(BaseURI.LIST + BaseURI.FILTER)
+    ResponseEntity<?> getBranchListFilter(@RequestBody ReqBranchCriteria criteria);
 
     @PostMapping(BaseURI.GET + BaseURI.ONE)
     ResponseEntity<?> getBranchOne(@RequestBody ReqUUID request) throws BranchRequestException;

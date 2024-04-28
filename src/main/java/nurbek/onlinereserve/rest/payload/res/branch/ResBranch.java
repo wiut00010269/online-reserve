@@ -26,6 +26,8 @@ public class ResBranch {
 
     private String grade;
 
+    private String imgUrl;
+
     private BranchAddress address;
 
 }

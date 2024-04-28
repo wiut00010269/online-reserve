@@ -9,10 +9,7 @@ import nurbek.onlinereserve.rest.endpoint.BranchEndpoint;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
@@ -93,6 +90,16 @@ public class BranchController implements BranchEndpoint {
     public ResponseEntity<?> getBranchList() {
         List<ResBranch> branchList = service.getAllBranches();
         return GenericResponse.success(200, "Success", branchList);
+    }
+
+    @Override
+    public ResponseEntity<?> getBranchListFilter(ReqBranchCriteria criteria) {
+        try {
+            List<ResBranch> resultList = service.getBranchesFilter(criteria);
+            return GenericResponse.success(200, "Success", resultList);
+        } catch (Throwable th) {
+            return GenericResponse.error(401, th.getMessage());
+        }
     }
 
     @Override

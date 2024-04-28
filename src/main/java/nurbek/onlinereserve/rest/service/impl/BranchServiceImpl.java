@@ -25,6 +25,11 @@ import nurbek.onlinereserve.rest.service.BranchService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +46,8 @@ public class BranchServiceImpl implements BranchService {
     private final BranchRateRepository rateRepository;
 
     private final StorageService storageService;
+
+    private final EntityManager entityManager;
 
     private final GlobalVar globalVar;
 
@@ -232,6 +239,7 @@ public class BranchServiceImpl implements BranchService {
         resBranch.setOpenAt(branch.getOpenAt());
         resBranch.setCloseAt(branch.getCloseAt());
         resBranch.setGrade(branch.getGrade());
+        resBranch.setImgUrl(branch.getImgUrl());
         resBranch.setAddress(branch.getAddress());
 
         return resBranch;
@@ -286,6 +294,33 @@ public class BranchServiceImpl implements BranchService {
         return storageService.uploadFile(file);
     }
 
+    @Override
+    public List<ResBranch> getBranchesFilter(ReqBranchCriteria criteria) {
+
+        List<ResBranch> resultList = this.getFilteredList(criteria);
+
+
+
+        return null;
+    }
+
+    private List<ResBranch> getFilteredList(ReqBranchCriteria criteria) {
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Branch> criteriaQuery = criteriaBuilder.createQuery(Branch.class);
+        Root<Branch> root = criteriaQuery.from(Branch.class);
+
+        Predicate namePredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + criteria.getName().toLowerCase() + "%");
+        Predicate regionPredicate = criteriaBuilder.like(criteriaBuilder.lower(root.get("address").get("region")), "%" + criteria.getRegion().toLowerCase() + "%");
+
+        criteriaQuery.where(namePredicate);
+        criteriaQuery.where(regionPredicate);
+
+        List<Branch> resultList = entityManager.createQuery(criteriaQuery).getResultList();
+
+        return this.getResBranches(resultList);
+    }
+
     private List<ResBranch> getResBranches(List<Branch> topAppointedBranches) {
         List<ResBranch> resultList = new ArrayList<>();
         for (Branch latestBranch : topAppointedBranches) {
@@ -297,6 +332,7 @@ public class BranchServiceImpl implements BranchService {
             resBranch.setOpenAt(latestBranch.getOpenAt());
             resBranch.setCloseAt(latestBranch.getCloseAt());
             resBranch.setGrade(latestBranch.getGrade());
+            resBranch.setImgUrl(latestBranch.getImgUrl());
             resBranch.setAddress(latestBranch.getAddress());
             resultList.add(resBranch);
         }

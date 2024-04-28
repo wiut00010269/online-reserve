@@ -7,10 +7,7 @@ import nurbek.onlinereserve.config.exception.CustomException;
 import nurbek.onlinereserve.rest.payload.req.ReqCount;
 import nurbek.onlinereserve.rest.payload.req.ReqId;
 import nurbek.onlinereserve.rest.payload.req.ReqUUID;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqBranchId;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqRate;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqRegisterBranch;
-import nurbek.onlinereserve.rest.payload.req.branch.ReqUpdateBranch;
+import nurbek.onlinereserve.rest.payload.req.branch.*;
 import nurbek.onlinereserve.rest.payload.res.branch.ResBranch;
 import nurbek.onlinereserve.rest.payload.res.SuccessMessage;
 import nurbek.onlinereserve.rest.payload.res.branch.ResMyBranch;
@@ -45,5 +42,7 @@ public interface BranchService {
     List<ResBranch> getTopBookedRestaurants(ReqCount request) throws BranchRequestException;
 
     String uploadRestaurantFile(MultipartFile file);
+
+    List<ResBranch> getBranchesFilter(ReqBranchCriteria criteria);
 
 }
